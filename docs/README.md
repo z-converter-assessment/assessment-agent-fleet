@@ -5,6 +5,7 @@
 ## 진입
 - [getting-started.md](getting-started.md) — 키워드 중심 진행 순서
 - [preflight.md](preflight.md) — 작업 전 체크리스트
+- [decisions-pending.md](decisions-pending.md) — 결정 필요 항목 (TBD 종합)
 
 ## 설계
 - [architecture/](architecture/README.md) — 토폴로지, credential, agent release, env contract
