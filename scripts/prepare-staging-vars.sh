@@ -13,7 +13,8 @@ set -euo pipefail
 
 REPO_ROOT=$(cd "$(dirname "$0")/.." && pwd)
 ENV_DIR="$REPO_ROOT/ansible/inventory/staging/group_vars/all"
-AGENT_DIST_SHA="$HOME/assessment-agent/dist/SHA256SUMS"
+# 빌드 산출물은 ~/agent-binaries/latest/ 로 따로 관리. agent repo dist/ 가 아님.
+AGENT_DIST_SHA="$HOME/agent-binaries/latest/SHA256SUMS"
 
 cd "$REPO_ROOT/ansible"
 

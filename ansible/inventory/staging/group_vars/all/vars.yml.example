@@ -13,8 +13,10 @@ ansible_become: true                          # 대부분 task 가 root 필요
 agent_binary_source: "local_file"
 
 # local_file path 변수
-agent_binary_local_path: "/home/whdcks/assessment-agent/dist/assessment-agent-linux-x86_64"
-agent_binary_local_sha256: ""                 # agent repo dist/SHA256SUMS 첫 컬럼. 빈 값은 검증 skip
+# 빌드 산출물은 ~/agent-binaries/<version>/ 으로 따로 보관 + latest symlink 가리킴.
+# 새 빌드 시 dev-<sha8>/ 디렉토리 추가 후 latest symlink 갱신 (ansible 변수 변경 불필요).
+agent_binary_local_path: "{{ lookup('env', 'HOME') }}/agent-binaries/latest/assessment-agent-linux-x86_64"
+agent_binary_local_sha256: ""                 # ~/agent-binaries/latest/SHA256SUMS 첫 컬럼. 빈 값은 검증 skip
 
 # github_release path 변수 (agent_binary_source 가 github_release 일 때만 사용)
 agent_version: ""                             # 예: "v1.2.3"

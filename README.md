@@ -106,10 +106,13 @@ ansible-playbook -i inventory/staging/hosts.json playbooks/site.yml
 ```
 
 agent 가 GitHub Release 가 아닌 로컬 빌드 산출물을 사용하려면 (개발 path):
-- agent repo 에서 `bash scripts/build-linux.sh` 로 `dist/assessment-agent-linux-x86_64` + `dist/SHA256SUMS` 생성
-- `prepare-staging-vars.sh` 가 sha256 자동 추출 + all.yml 갱신
+- agent repo 에서 `bash scripts/build-linux.sh` 로 `dist/` 생성
+- 본 repo 에서 `bash scripts/archive-agent-build.sh` 로 `~/agent-binaries/dev-<sha8>/` 로 archive + `latest` symlink 갱신
+- `prepare-staging-vars.sh` 가 `~/agent-binaries/latest/SHA256SUMS` 에서 sha256 자동 추출 → `vars.yml` 갱신
 
-정식 release path (`agent_binary_source: github_release`) 는 `ansible/inventory/staging/group_vars/all/vars.yml` 에서 토글.
+archive 구조: `docs/operations/agent-binary-archive.md`.
+
+정식 release path (`agent_binary_source: github_release`) 는 `ansible/inventory/<env>/group_vars/all/vars.yml` 에서 토글.
 
 ### 7) 정리 (teardown)
 
@@ -128,8 +131,9 @@ OpenStack 자원 (fleet VM, 임시 engine, sg-agent 변경분, cinder volume) + 
 |--------|------|----------|
 | `bootstrap.sh` | iac toolchain 초기 셋업 | 처음 한 번 |
 | `setup-ansible.sh` | ansible galaxy + vault password | 처음 한 번 |
+| `archive-agent-build.sh` | agent dist/* 를 ~/agent-binaries/dev-<sha8>/ 로 archive + latest symlink | agent 빌드 후 매번 |
 | `build-inventory.sh <env>` | terraform output -> ansible inventory | terraform apply 후 매번 |
-| `prepare-staging-vars.sh` | group_vars/all 실값 + sha256 자동 추출 + vault dummy | agent 빌드 후 |
+| `prepare-staging-vars.sh` | group_vars/all 실값 + sha256 자동 추출 + vault dummy | archive 후 |
 | `tf-output-to-inventory.sh` | inventory 변환 (build-inventory.sh 가 호출) | (내부) |
 | `teardown.sh` | 본 repo 가 만든 OpenStack 자원 + 산출물 정리 | 종료 시 |
 

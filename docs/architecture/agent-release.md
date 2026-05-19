@@ -9,10 +9,10 @@ agent C11 바이너리 fetch 방식 명세. 결정 history 는 [ADR 0006](../adr
 ## fetch path 두 가지
 
 ### local_file (개발/PoC path)
-- 컨테이너 빌드 결과 (`agent repo 의 dist/assessment-agent-linux-x86_64`) 를 controller (iac) 측 파일로 inject
+- 컨테이너 빌드 결과를 `~/agent-binaries/<version>/` 으로 archive 후 controller (iac) 측 파일로 inject. archive 절차는 [docs/operations/agent-binary-archive.md](../operations/agent-binary-archive.md).
 - ansible role `agent_binary` 의 `agent_binary_source: local_file` 토글
-- agent_binary_local_path: controller 측 절대 경로
-- agent_binary_local_sha256: 무결성 검증 (선택). dist/SHA256SUMS 의 첫 컬럼
+- agent_binary_local_path: 보통 `~/agent-binaries/latest/assessment-agent-linux-x86_64` (symlink)
+- agent_binary_local_sha256: 무결성 검증 (선택). `~/agent-binaries/<version>/SHA256SUMS` 의 첫 컬럼. `scripts/prepare-staging-vars.sh` 가 자동 추출
 
 ### github_release (정식 path)
 - agent repo 의 GitHub Release 에서 download

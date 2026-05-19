@@ -8,7 +8,7 @@ agent fleet 의 staging 적용이 완료된 상태에서, 별도 engine 인프�
 - 본 repo 의 [README](../../README.md) "빠른 시작" 의 1~6 단계 완료 (fleet VM 3대 ACTIVE, agent systemd active)
 - agent repo (`/home/whdcks/assessment-agent`) clone 완료
 - engine repo (`/home/whdcks/assessment-engine`) clone 완료
-- agent 바이너리 빌드 완료 (`/home/whdcks/assessment-agent/dist/assessment-agent-linux-x86_64`)
+- agent 바이너리 빌드 완료. 산출물은 `~/agent-binaries/latest/` 로 보관 (`docs/operations/agent-binary-archive.md` 참조)
 
 ## 1) sg-agent 에 broker 포트 ingress 추가
 

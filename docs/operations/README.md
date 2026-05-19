@@ -10,3 +10,4 @@
 - [rotate.md](rotate.md) — env / secret 회전
 - [runbook.md](runbook.md) — 인시던트 대응
 - [poc-temp-engine.md](poc-temp-engine.md) — 임시 engine 으로 end-to-end 검증 (일회성 PoC)
+- [agent-binary-archive.md](agent-binary-archive.md) — agent 빌드 산출물을 ~/agent-binaries/ 로 따로 보관

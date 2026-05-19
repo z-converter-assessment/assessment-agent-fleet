@@ -1,16 +1,46 @@
-# Copy to all.yml. secret 은 group_vars/vault.yml 에 ansible-vault 로 보관.
+# Copy to vars.yml. secret 은 vault.yml 에 ansible-vault 로 보관.
+# vars.yml 은 .gitignore 차단. 본 예시는 prod 표준 — staging 검증 통과 후 실값 확정.
 
-ansible_user: ubuntu
+# --- SSH 연결 ---
+ansible_user: debian
+ansible_ssh_private_key_file: ~/.ssh/agent-fleet
 ansible_python_interpreter: /usr/bin/python3
+ansible_become: true
 
-agent_version: "v0.0.0"
-agent_arch: "amd64"
-agent_release_repo: "OWNER/assessment-agent"
+# --- agent binary fetch ---
+# prod 는 정식 release path 권장 (agent repo 의 GitHub Release).
+agent_binary_source: "github_release"
+agent_version: ""                             # 예: "v1.2.3"
+agent_release_repo: "z-converter-assessment/assessment-agent"
+agent_arch: "x86_64"
 
+# local_file 사용 시 (override)
+# agent_binary_source: "local_file"
+agent_binary_local_path: "{{ lookup('env', 'HOME') }}/agent-binaries/latest/assessment-agent-linux-x86_64"
+agent_binary_local_sha256: ""
+
+# --- 공통 경로 / 사용자 ---
 agent_user: "assessment-agent"
 agent_install_path: "/usr/local/bin/assessment-agent"
-agent_env_path: "/etc/assessment-agent.env"
+agent_config_dir: "/etc/assessment-agent"
+agent_env_path: "/etc/assessment-agent/agent.env"
+agent_env_local_path: "/etc/assessment-agent/agent.env.local"
 
-agent_log_level: "info"
+# --- agent runtime env (non-secret) ---
+rabbitmq_host: ""                             # prod broker host (실값 필수)
+rabbitmq_port: 5671                           # prod AMQPS
+rabbitmq_vhost: "/assessment"
+rabbitmq_heartbeat_sec: 60
+rabbitmq_confirm_timeout_sec: 5
+
+rabbitmq_tls_enabled: 1
+rabbitmq_tls_ca_path: "/etc/assessment-agent/ca.pem"
+rabbitmq_tls_verify_peer: 1
+rabbitmq_tls_verify_hostname: 1
+
+rabbitmq_exchange: "assessment"
+rabbitmq_routing_key_inventory: "server.inventory"
+rabbitmq_routing_key_metrics: "server.metrics"
+rabbitmq_routing_key_error: "server.error"
+
 agent_interval_sec: 60
-engine_endpoint: ""
