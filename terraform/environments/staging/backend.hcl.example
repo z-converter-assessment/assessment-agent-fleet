@@ -1,0 +1,11 @@
+# Backend 종류 결정 후 채움. terraform init -backend-config=environments/staging/backend.hcl 로 적용.
+#
+# 예시 (swift):
+# container         = "tfstate-agent-fleet-staging"
+# archive_container = "tfstate-agent-fleet-staging-archive"
+#
+# 예시 (s3 호환 endpoint):
+# bucket   = "tfstate-agent-fleet-staging"
+# key      = "terraform.tfstate"
+# region   = "RegionOne"
+# endpoint = "https://swift.example.org"

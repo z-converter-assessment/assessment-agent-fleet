@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars and fill in values. terraform.tfvars 은 .gitignore가 차단.
+
+openstack_cloud = "openstack-prod"
+environment     = "prod"
+keypair_name    = "agent-fleet-prod"
+network_id      = "00000000-0000-0000-0000-000000000000"
+
+agent_workers = {
+  # 매트릭스는 docs/architecture/topology.md 결정 후 채움.
+}

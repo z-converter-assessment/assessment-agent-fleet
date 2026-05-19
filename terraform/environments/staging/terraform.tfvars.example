@@ -1,0 +1,14 @@
+# Copy to terraform.tfvars and fill in values. terraform.tfvars 은 .gitignore가 차단.
+
+openstack_cloud = "openstack-staging"
+environment     = "staging"
+keypair_name    = "agent-fleet-staging"
+network_id      = "00000000-0000-0000-0000-000000000000"
+
+agent_workers = {
+  "agent-staging-01" = {
+    image  = "Ubuntu-24.04"
+    flavor = "m1.small"
+    role   = "app"
+  }
+}

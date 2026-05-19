@@ -1,0 +1,5 @@
+# Backend 종류 결정 후 채움. terraform init -backend-config=environments/prod/backend.hcl 로 적용.
+#
+# 예시 (swift):
+# container         = "tfstate-agent-fleet-prod"
+# archive_container = "tfstate-agent-fleet-prod-archive"
