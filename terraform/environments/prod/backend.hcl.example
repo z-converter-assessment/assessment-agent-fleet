@@ -1,5 +1,4 @@
-# Backend 종류 결정 후 채움. terraform init -backend-config=environments/prod/backend.hcl 로 적용.
-#
-# 예시 (swift):
-# container         = "tfstate-agent-fleet-prod"
-# archive_container = "tfstate-agent-fleet-prod-archive"
+# Copy to backend.hcl. backend.hcl 는 .gitignore 차단.
+# state backend 는 local. path 는 iac 에 attach 한 cinder volume mount 경로.
+
+path = "/var/lib/terraform-state/prod/terraform.tfstate"

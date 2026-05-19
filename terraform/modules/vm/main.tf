@@ -1,3 +1,15 @@
+resource "openstack_networking_port_v2" "this" {
+  name           = "${var.name}-port"
+  network_id     = var.network_id
+  admin_state_up = true
+
+  security_group_ids = var.security_group_ids
+
+  fixed_ip {
+    subnet_id = var.subnet_id
+  }
+}
+
 resource "openstack_compute_instance_v2" "this" {
   name        = var.name
   image_name  = var.image
@@ -5,7 +17,7 @@ resource "openstack_compute_instance_v2" "this" {
   key_pair    = var.keypair
 
   network {
-    uuid = var.network_id
+    port = openstack_networking_port_v2.this.id
   }
 
   metadata = merge(

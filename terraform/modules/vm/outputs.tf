@@ -3,7 +3,7 @@ output "hostname" {
 }
 
 output "address" {
-  value = openstack_compute_instance_v2.this.access_ip_v4
+  value = openstack_networking_port_v2.this.all_fixed_ips[0]
 }
 
 output "role" {

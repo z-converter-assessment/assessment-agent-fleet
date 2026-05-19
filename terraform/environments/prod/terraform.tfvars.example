@@ -1,10 +1,19 @@
-# Copy to terraform.tfvars and fill in values. terraform.tfvars 은 .gitignore가 차단.
+# Copy to terraform.tfvars and fill in values. terraform.tfvars 는 .gitignore 차단.
+# prod 매트릭스는 staging 검증 통과 후 확정. 현재는 staging 과 동일 표준 가정한 예시.
 
-openstack_cloud = "openstack-prod"
+openstack_cloud = "openstack"
 environment     = "prod"
-keypair_name    = "agent-fleet-prod"
-network_id      = "00000000-0000-0000-0000-000000000000"
+keypair_name    = "agent-fleet"
+
+network_name = "zconverter-private-net"
+subnet_name  = "target-vms"
+
+security_group_names = ["sg-agent"]
 
 agent_workers = {
-  # 매트릭스는 docs/architecture/topology.md 결정 후 채움.
+  "agent-debian12-vm-01" = {
+    image  = "debian12_x64_uefi_3G"
+    flavor = "c1_m1_r30"
+    role   = "agent-host"
+  }
 }

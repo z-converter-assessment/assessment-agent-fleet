@@ -9,17 +9,32 @@ variable "environment" {
 }
 
 variable "keypair_name" {
-  description = "OpenStack keypair 이름. 워커 VM에 inject."
+  description = "OpenStack keypair 이름. fleet 멤버에 inject."
   type        = string
 }
 
-variable "network_id" {
-  description = "워커 VM이 join할 network UUID 또는 이름."
+variable "network_name" {
+  description = "fleet 멤버 가 join 할 OpenStack network 이름. data lookup 으로 ID 해석."
   type        = string
+}
+
+variable "subnet_name" {
+  description = "network 안에서 fleet 멤버 port 가 부착될 subnet 이름. data lookup 으로 ID 해석."
+  type        = string
+}
+
+variable "security_group_names" {
+  description = "fleet 멤버 port 에 부착할 security group 이름 목록. data lookup 으로 ID 해석."
+  type        = list(string)
+
+  validation {
+    condition     = length(var.security_group_names) > 0
+    error_message = "security_group_names 가 비어있다."
+  }
 }
 
 variable "agent_workers" {
-  description = "워커 VM 매트릭스. docs/architecture/topology.md 의 단일 진실."
+  description = "fleet 멤버 매트릭스. docs/architecture/topology.md 의 단일 진실."
   type = map(object({
     image    = string
     flavor   = string
@@ -36,6 +51,6 @@ variable "agent_workers" {
     condition = alltrue([
       for w in var.agent_workers : length(w.image) > 0 && length(w.flavor) > 0 && length(w.role) > 0
     ])
-    error_message = "각 worker 의 image, flavor, role 이 모두 정의되어야 한다."
+    error_message = "각 fleet 멤버 의 image, flavor, role 이 모두 정의되어야 한다."
   }
 }

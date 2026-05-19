@@ -1,8 +1,10 @@
 terraform {
   required_version = ">= 1.6.0"
 
-  # backend 종류 결정 후 추가. swift, s3 호환, local 중 택일.
-  # backend "swift" {}
+  # backend "local" + state 파일 경로를 cinder volume mount 위치로 지정.
+  # 결정 history: docs/adr/0005-terraform-state-backend.md
+  # 실제 path 는 환경별 backend.hcl 로 주입.
+  backend "local" {}
 
   required_providers {
     openstack = {
