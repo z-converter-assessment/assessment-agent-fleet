@@ -28,3 +28,4 @@
 
 ## 목록
 - [0001-tooling.md](0001-tooling.md) — Terraform + Ansible 선택
+- [0002-commit-convention.md](0002-commit-convention.md) — commit message 규칙
