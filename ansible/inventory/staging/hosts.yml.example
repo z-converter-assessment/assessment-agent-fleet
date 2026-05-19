@@ -1,0 +1,11 @@
+# Copy to hosts.yml. hosts.yml 은 .gitignore가 차단.
+# scripts/tf-output-to-inventory.sh 로 자동 생성 권장 (출력은 hosts.json).
+# 수동 작성 시 ansible_user 등 공통 변수는 group_vars/all.yml 에서 정의.
+
+all:
+  children:
+    agent_workers:
+      hosts:
+        agent-staging-01:
+          ansible_host: 10.0.0.11
+          agent_role: app

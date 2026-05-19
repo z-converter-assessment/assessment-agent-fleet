@@ -1,0 +1,17 @@
+[Unit]
+Description=Assessment Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ agent_user }}
+EnvironmentFile={{ agent_env_path }}
+ExecStart={{ agent_install_path }}
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGTERM
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=multi-user.target

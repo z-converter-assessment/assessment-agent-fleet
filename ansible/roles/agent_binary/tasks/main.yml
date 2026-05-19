@@ -1,0 +1,26 @@
+- name: Validate required vars
+  ansible.builtin.assert:
+    that:
+      - agent_version | length > 0
+      - agent_release_repo | length > 0
+    fail_msg: "agent_version 과 agent_release_repo 가 inventory 변수에서 정의되어야 한다."
+
+- name: Download agent binary from GitHub Release
+  ansible.builtin.get_url:
+    url: "https://github.com/{{ agent_release_repo }}/releases/download/{{ agent_version }}/assessment-agent-linux-{{ agent_arch }}"
+    dest: "{{ agent_install_path }}.new"
+    mode: "0755"
+    owner: root
+    group: root
+  # private repo 인 경우 url 에 token 또는 headers 추가 필요.
+  # sha256 또는 signature 검증은 release contract 확정 후 추가.
+
+- name: Promote new binary
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ agent_install_path }}.new"
+    dest: "{{ agent_install_path }}"
+    mode: "0755"
+    owner: root
+    group: root
+  notify: Restart assessment-agent

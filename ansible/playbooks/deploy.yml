@@ -1,0 +1,10 @@
+- name: Install and configure assessment-agent
+  hosts: agent_workers
+  become: true
+  gather_facts: true
+
+  roles:
+    - role: common
+    - role: agent_binary
+    - role: agent_env
+    - role: agent_service

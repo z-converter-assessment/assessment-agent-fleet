@@ -1,0 +1,4 @@
+agent_version: ""
+agent_arch: "amd64"
+agent_release_repo: ""
+agent_install_path: "/usr/local/bin/assessment-agent"

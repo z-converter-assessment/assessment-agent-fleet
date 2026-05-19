@@ -1,0 +1,5 @@
+- name: Deploy assessment-agent fleet
+  ansible.builtin.import_playbook: deploy.yml
+
+- name: Health check
+  ansible.builtin.import_playbook: health-check.yml

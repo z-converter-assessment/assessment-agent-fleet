@@ -1,0 +1,16 @@
+# Copy to all.yml. secret 은 group_vars/vault.yml 에 ansible-vault 로 보관.
+
+ansible_user: ubuntu
+ansible_python_interpreter: /usr/bin/python3
+
+agent_version: "v0.0.0"
+agent_arch: "amd64"
+agent_release_repo: "OWNER/assessment-agent"
+
+agent_user: "assessment-agent"
+agent_install_path: "/usr/local/bin/assessment-agent"
+agent_env_path: "/etc/assessment-agent.env"
+
+agent_log_level: "info"
+agent_interval_sec: 60
+engine_endpoint: ""

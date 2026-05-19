@@ -1,0 +1,5 @@
+agent_env_path: "/etc/assessment-agent.env"
+agent_user: "assessment-agent"
+
+# 키 카탈로그는 docs/architecture/env-contract.md 의 단일 진실.
+# 환경별 값은 group_vars / host_vars / vault 에서 override.
