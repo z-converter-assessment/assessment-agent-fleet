@@ -1,0 +1,4 @@
+# ansible-lint 설정.
+# profile: basic | min | moderate | safety | shared | production
+# 처음에는 basic 부터 시작. 점진적으로 상향.
+profile: basic
