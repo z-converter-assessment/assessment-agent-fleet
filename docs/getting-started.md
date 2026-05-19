@@ -5,9 +5,10 @@
 
 ## 0. 작업 환경 진입
 - RDP / WindowApp -> Windows Server 2022 점프호스트
-- 점프호스트 -> ssh -> 인프라 VM (Ubuntu 또는 Debian)
-- 사전 셋업 전제: OpenStack credential, ssh key
-- 미흡 시 preflight.md 참조
+- 점프호스트에서 인프라 VM 생성 + ssh 셋업: `docs/operations/infra-vm-create.md`
+- ssh -> 인프라 VM (Ubuntu 또는 Debian)
+- 인프라 VM toolchain 설치: `docs/operations/bootstrap.md`
+- 미흡 시 `docs/preflight.md` 참조
 
 ## 1. credential 확인
 - clouds.yaml 또는 application credential
