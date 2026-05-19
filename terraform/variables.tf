@@ -26,4 +26,16 @@ variable "agent_workers" {
     role     = string
     metadata = optional(map(string), {})
   }))
+
+  validation {
+    condition     = length(var.agent_workers) > 0
+    error_message = "agent_workers 매트릭스가 비어있다."
+  }
+
+  validation {
+    condition = alltrue([
+      for w in var.agent_workers : length(w.image) > 0 && length(w.flavor) > 0 && length(w.role) > 0
+    ])
+    error_message = "각 worker 의 image, flavor, role 이 모두 정의되어야 한다."
+  }
 }
