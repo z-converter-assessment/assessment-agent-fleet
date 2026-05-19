@@ -1,0 +1,41 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfvars
+!*.tfvars.example
+backend.hcl
+!backend.hcl.example
+
+# Ansible
+*.retry
+.vault_pass
+vault_password*
+ansible/inventory/*/hosts.yml
+ansible/inventory/*/hosts.json
+ansible/inventory/*/group_vars/all.yml
+ansible/collections/
+
+# OpenStack credential
+clouds.yaml
+*.openrc
+secure.yaml
+
+# OS
+.DS_Store
+*.swp
+
+# IDE
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
