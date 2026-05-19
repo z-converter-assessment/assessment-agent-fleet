@@ -33,7 +33,7 @@ terraform 출력의 `agent_workers.value.<name>` 은 `{hostname, address, role}`
 3. 공통 (ansible_user, ansible_python_interpreter 등): `group_vars/all.yml`
 
 ## 그룹 컨벤션
-- `agent_workers` — 모든 워커
+- `agent_workers` — 모든 fleet 멤버
 - 역할별 그룹 (예: `agent_app`, `agent_db`) 은 변환 스크립트 확장 시 자동 생성 가능
 
 ## 의존
