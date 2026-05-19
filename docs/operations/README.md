@@ -9,3 +9,4 @@
 - [upgrade.md](upgrade.md) — agent 버전 갱신
 - [rotate.md](rotate.md) — env / secret 회전
 - [runbook.md](runbook.md) — 인시던트 대응
+- [poc-temp-engine.md](poc-temp-engine.md) — 임시 engine 으로 end-to-end 검증 (일회성 PoC)

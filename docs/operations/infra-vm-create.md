@@ -36,7 +36,7 @@ Horizon -> Compute -> Instances -> Launch Instance.
 - Instance Name: `agent-fleet-infra`
 - Source: Ubuntu 24.04 또는 Debian 12 image
 - Flavor: vCPU 2 / RAM 4GB / disk 20GB 이상 권장
-- Networks: 워커 VM 도 join 할 network (기존 또는 신규)
+- Networks: fleet 멤버 도 join 할 network (기존 또는 신규)
 - Security Groups: `default` + `infra-vm`
 - Key Pair: `agent-fleet`
 
@@ -58,7 +58,7 @@ ssh -i $env:USERPROFILE\.ssh\agent-fleet <user>@<vm-ip>
 인프라 VM 안에서
 - `docs/operations/bootstrap.md` — toolchain 설치
 - `docs/preflight.md` — OpenStack credential, ssh key, repo clone
-- `docs/operations/deploy.md` — 워커 VM provisioning + 배포
+- `docs/operations/deploy.md` — fleet 멤버 VM provisioning + 배포
 
 claude code 를 인프라 VM 안에서 쓰려면 npm 또는 native installer 로 별도 설치.
 

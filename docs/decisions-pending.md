@@ -4,38 +4,33 @@
 결정 후 본 파일에서 항목 제거 + ADR 추가 + 해당 코드/docs 갱신.
 
 ## Topology (docs/architecture/topology.md)
-- 워커 VM 개수
-- OS 분포 (단일 또는 다양)
-- flavor 종류 (CPU, RAM, disk)
-- 역할 정의 (web, db, cache, mq, app 등)
-- 네이밍 컨벤션 (`<role>-NN`, `<host>-NN` 등)
-- 기존 network join 또는 신규 생성
-- 서브넷 CIDR 할당
-- security group rule 매트릭스 (ingress / egress, 포트)
-- floating IP 필요 여부
-- DNS, NTP server
-- OpenStack keypair 이름
-- 워커 VM 에 inject 할 public key 경로
-
-## Credentials (docs/architecture/credentials.md)
-- clouds.yaml 또는 application credential 중 채택
-
-## Agent Release (docs/architecture/agent-release.md)
-- repo 좌표 (`OWNER/REPO`)
-- 지원 arch 목록
-- signature 검증 정책 (cosign, gpg, 또는 미적용)
-
-## Env Contract (docs/architecture/env-contract.md)
-- 정확한 키 카탈로그
-- 키 분류 (필수 / 선택 / secret)
-- 외부 시스템 연결 키 (engine, broker, log forwarder 등)
+staging 매트릭스는 [ADR 0004](adr/0004-topology.md) 로 확정. 남은 항목:
+- prod 매트릭스 (개수, OS 다양화 여부) — staging 검증 통과 후 확정
+- DNS / NTP 커스텀 (현재는 cloud-init 기본값 가닥)
 
 ## Terraform (terraform/README.md)
-- state backend 종류 (swift, s3 호환, local)
-- network 모듈 추가 시점
-- security-group 모듈 추가 시점
-- floating IP 정책
+state backend 는 [ADR 0005](adr/0005-terraform-state-backend.md) 로 확정 (local + cinder volume). 남은 항목:
+- network 모듈 추가 시점 — 현재는 기존 network 재사용으로 모듈 불필요. 새 network 생성 필요 시 결정
+- security-group 모듈 추가 시점 — sg-agent 룰 수정으로 시작. terraform 으로 sg 자원 import 또는 module 화 시점 결정 필요
+- prod backend.hcl 실값화 시점
 
-## Ansible (ansible/README.md)
-- Vault password 핸들링 (파일, env, helper script)
-- agent release contract 확정 후 `roles/agent_binary` 의 sha256 / signature 검증 활성화
+## Agent Release / Env / Vault
+- agent release: [ADR 0006](adr/0006-agent-release.md) 로 확정 (repo `z-converter-assessment/assessment-agent`, x86_64, 두 path 토글)
+- env contract: agent repo 의 `.env.example` 단일 진실로 [docs/architecture/env-contract.md](architecture/env-contract.md) 에 반영
+- ansible vault: [ADR 0007](adr/0007-ansible-vault.md) 로 확정 (ansible/.vault_pass.txt + ansible.cfg)
+
+남은 항목:
+- agent repo 의 `.github/workflows/release.yml` develop 머지 시점 — github_release path 전환
+- cosign / gpg signature 도입 결정
+- prod 환경 vault password 별도화 (vault-id) 여부 — 운영자 추가 시점 재검토
+
+## RABBITMQ 연결 (PoC 단계)
+- staging 의 `RABBITMQ_HOST` 실값 (mq-vm 10.0.10.110 가닥, 검증 필요)
+- `RABBITMQ_VHOST`, `RABBITMQ_USER`, `RABBITMQ_PASS` 실값
+- sg-mq 의 ingress 룰에 sg-agent (또는 target-vms CIDR) 추가 필요
+- TLS (5671) 사용 여부 — 현재 staging plain (5672) 가닥
+
+## Backup / 운영
+- cinder volume `tfstate-agent-fleet` 의 snapshot 주기 / 보존 정책
+- iac VM 자체 재구축 절차 (volume detach -> 신 iac 에 attach -> mount -> terraform 명령 복구)
+- ansible vault password 백업 정책 (운영자 개인 vault — 별도 트랙)

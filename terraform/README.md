@@ -1,6 +1,6 @@
 # terraform
 
-OpenStack 환경의 워커 VM provisioning. `agent_workers` 변수로 VM 매트릭스 정의.
+OpenStack 환경의 fleet 멤버 VM provisioning. `agent_workers` 변수로 VM 매트릭스 정의.
 
 ## 구조
 - `versions.tf` — terraform 버전, openstack provider 버전
@@ -20,10 +20,12 @@ OpenStack 환경의 워커 VM provisioning. `agent_workers` 변수로 VM 매트�
 5. `terraform apply -var-file=environments/<env>/terraform.tfvars`
 6. `terraform output -json` 결과를 Ansible inventory로 변환
 
-## 결정 필요
-- state backend 종류 (swift, s3 호환, local)
-- network 모듈 추가 시점 (기존 network join 시 불필요)
-- security group 모듈 추가 시점
-- floating IP 정책
+## 확정 결정 (ADR 참조)
+- topology: ADR 0004 — fleet 멤버 매트릭스, 네트워크, sg, keypair, naming
+- state backend: ADR 0005 — local + cinder volume mount
+
+## 잔여 결정
+- prod 환경 매트릭스 (staging 검증 통과 후)
+- network / security-group 의 terraform module 화 시점 (현재는 기존 자산 재사용)
 
 세부 설계는 docs/architecture/ 참조.

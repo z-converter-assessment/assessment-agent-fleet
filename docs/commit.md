@@ -33,6 +33,6 @@ repo 진입과 운영에 필요한 핵심 문서 구조 셋업.
 ```
 feat(terraform): openstack vm provisioning 골격 추가
 
-OpenStack provider 기반의 워커 VM provisioning 골격.
+OpenStack provider 기반의 fleet 멤버 VM provisioning 골격.
 state backend 와 network 모듈은 결정 후 추가.
 ```

@@ -49,7 +49,7 @@ terraform plan -var-file=environments/<env>/terraform.tfvars
 - 의도된 drift -> `terraform apply` 로 동기화
 - 의도 외 drift -> state 와 실제 자원 모두 점검 후 결정
 
-## 워커 VM 강제 종료
+## fleet 멤버 VM 강제 종료
 
 ```bash
 terraform destroy \

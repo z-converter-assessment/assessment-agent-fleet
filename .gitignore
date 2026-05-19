@@ -16,11 +16,12 @@ backend.hcl
 
 # Ansible
 *.retry
-.vault_pass
+.vault_pass*
 vault_password*
 ansible/inventory/*/hosts.yml
 ansible/inventory/*/hosts.json
-ansible/inventory/*/group_vars/all.yml
+# group_vars/all/ 디렉토리 모드 — vars.yml 차단, vault.yml 은 ansible-vault 암호화 후 commit 가능
+ansible/inventory/*/group_vars/all/vars.yml
 ansible/collections/
 
 # OpenStack credential

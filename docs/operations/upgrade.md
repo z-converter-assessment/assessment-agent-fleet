@@ -1,6 +1,6 @@
 # Upgrade — agent 버전 갱신
 
-agent 새 release 가 출시되었을 때 워커 VM의 바이너리 교체.
+agent 새 release 가 출시되었을 때 fleet 멤버 VM 의 바이너리 교체.
 
 ## 절차
 

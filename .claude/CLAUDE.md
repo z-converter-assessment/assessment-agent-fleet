@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 ## 정체성
-assessment-agent-fleet — OpenStack 환경에서 agent 워커 VM N대를 Terraform과 Ansible로 provisioning, 운영하는 인프라 repo.
+assessment-agent-fleet — OpenStack 환경에서 agent fleet 멤버 VM N대를 Terraform과 Ansible로 provisioning, 운영하는 인프라 repo. fleet 멤버 = 평가 대상 시뮬레이션 VM (agent C11 install -> 자신을 인벤토리/메트릭 수집 후 engine 으로 outbound 전송).
 
 ## 작업 거점
 - 진입 경로: 맥북 -> RDP/WindowApp -> Windows Server 2022 점프호스트 -> ssh -> 인프라 VM

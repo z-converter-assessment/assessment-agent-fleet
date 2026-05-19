@@ -31,7 +31,7 @@
 - 프로젝트, 도메인, region 명확
 
 ## SSH key
-- 워커 VM 접근용 ssh key pair 준비
+- fleet 멤버 접근용 ssh key pair 준비
 - OpenStack keypair 등록 여부 확인
 
 ## repo
