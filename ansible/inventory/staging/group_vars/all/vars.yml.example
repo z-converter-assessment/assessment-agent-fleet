@@ -1,0 +1,50 @@
+# Copy to vars.yml. secret 은 vault.yml 에 ansible-vault 로 보관.
+# vars.yml 은 .gitignore 차단. 본 예시는 staging 표준값.
+
+# --- SSH 연결 ---
+ansible_user: debian                          # debian12_x64_uefi_3G 의 기본 cloud-init 사용자
+ansible_ssh_private_key_file: ~/.ssh/agent-fleet
+ansible_python_interpreter: /usr/bin/python3
+ansible_become: true                          # 대부분 task 가 root 필요
+
+# --- agent binary fetch ---
+# local_file: controller (iac) 측 빌드 결과를 push (개발/PoC path)
+# github_release: agent repo 의 release 에서 download (정식 path)
+agent_binary_source: "local_file"
+
+# local_file path 변수
+agent_binary_local_path: "/home/whdcks/assessment-agent/dist/assessment-agent-linux-x86_64"
+agent_binary_local_sha256: ""                 # agent repo dist/SHA256SUMS 첫 컬럼. 빈 값은 검증 skip
+
+# github_release path 변수 (agent_binary_source 가 github_release 일 때만 사용)
+agent_version: ""                             # 예: "v1.2.3"
+agent_release_repo: "z-converter-assessment/assessment-agent"
+agent_arch: "x86_64"
+
+# --- 공통 경로 / 사용자 ---
+agent_user: "assessment-agent"
+agent_install_path: "/usr/local/bin/assessment-agent"
+agent_config_dir: "/etc/assessment-agent"
+agent_env_path: "/etc/assessment-agent/agent.env"
+agent_env_local_path: "/etc/assessment-agent/agent.env.local"
+
+# --- agent runtime env (non-secret) ---
+# 키 카탈로그 단일 진실: docs/architecture/env-contract.md
+rabbitmq_host: "10.0.10.110"                  # mq-vm. 실값은 환경별 갱신
+rabbitmq_port: 5672
+rabbitmq_vhost: "/"
+rabbitmq_heartbeat_sec: 60
+rabbitmq_confirm_timeout_sec: 5
+
+rabbitmq_tls_enabled: 0                       # staging plain. prod 는 1 + AMQPS 포트 5671
+# rabbitmq_tls_ca_path: "/etc/assessment-agent/ca.pem"
+# rabbitmq_tls_verify_peer: 1
+# rabbitmq_tls_verify_hostname: 1
+
+rabbitmq_exchange: "assessment"
+rabbitmq_routing_key_inventory: "server.inventory"
+rabbitmq_routing_key_metrics: "server.metrics"
+rabbitmq_routing_key_error: "server.error"
+
+agent_interval_sec: 60
+# agent_external_ip: ""                       # 미설정 시 IMDS 자동 조회

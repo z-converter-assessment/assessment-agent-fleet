@@ -1,4 +1,6 @@
-agent_env_path: "/etc/assessment-agent.env"
+agent_config_dir: "/etc/assessment-agent"
+agent_env_path: "/etc/assessment-agent/agent.env"
+agent_env_local_path: "/etc/assessment-agent/agent.env.local"
 agent_user: "assessment-agent"
 
 # 키 카탈로그는 docs/architecture/env-contract.md 의 단일 진실.

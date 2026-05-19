@@ -2,12 +2,26 @@
   ansible.builtin.package:
     name:
       - ca-certificates
-      - curl
     state: present
+
+- name: Ensure agent system group exists
+  ansible.builtin.group:
+    name: "{{ agent_user }}"
+    system: true
 
 - name: Ensure agent system user exists
   ansible.builtin.user:
     name: "{{ agent_user }}"
+    group: "{{ agent_user }}"
     system: true
     shell: /usr/sbin/nologin
+    home: /var/lib/agent-worker
     create_home: false
+
+- name: Ensure /var/lib/agent-worker exists (worker state dir)
+  ansible.builtin.file:
+    path: /var/lib/agent-worker
+    state: directory
+    mode: "0700"
+    owner: "{{ agent_user }}"
+    group: "{{ agent_user }}"

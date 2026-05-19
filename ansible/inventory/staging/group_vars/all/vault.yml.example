@@ -1,0 +1,15 @@
+# Copy and encrypt:
+#   ansible-vault encrypt --output vault.yml vault.yml.example
+# 또는 처음부터 암호화 생성:
+#   ansible-vault create vault.yml
+#
+# 명명: vault_<키소문자> 접두. assessment-agent.env.local.j2 가 {{ vault_xxx }} 로 참조.
+# 평문 commit 금지: vault.yml 은 ansible-vault 로 암호화된 상태로만 commit.
+# 키 카탈로그 단일 진실: docs/architecture/env-contract.md
+
+# --- Broker credentials (필수 / secret) ---
+vault_rabbitmq_user: "REPLACE_ME"
+vault_rabbitmq_pass: "REPLACE_ME"
+
+# --- mTLS client key (선택, prod) ---
+# vault_rabbitmq_tls_key: ""                  # 파일 내용 또는 path 참조 정책에 따라
