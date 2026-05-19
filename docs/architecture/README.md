@@ -7,3 +7,4 @@
 - [credentials.md](credentials.md) — OpenStack credential 흐름
 - [agent-release.md](agent-release.md) — agent C11 GitHub Release contract
 - [env-contract.md](env-contract.md) — agent env 키 명세
+- [inventory.md](inventory.md) — Ansible inventory 자동 생성과 구조
