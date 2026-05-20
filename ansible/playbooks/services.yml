@@ -39,10 +39,3 @@
   gather_facts: true
   roles:
     - role: service_monitor
-
-- name: Install service_app (apache)
-  hosts: service_app
-  become: true
-  gather_facts: true
-  roles:
-    - role: service_app

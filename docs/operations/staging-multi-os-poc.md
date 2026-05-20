@@ -211,10 +211,17 @@ ansible -i inventory/staging/hosts.json agent-debian12-web-01 -m shell --become 
 | agent-debian13-mq-01 | debian13 | c2_m2_r40 | mosquitto | mixed | CPU + 메모리 + IO 복합 (50MB로 완화) |
 | agent-rocky9-cache-01 | rocky9 | c1_m1_r30 | memcached | mem_heavy | 메모리 40% + swap 압박 |
 | agent-ubuntu20-mq-01 | ubuntu20 | c2_m2_r40 | prometheus-node-exporter | idle | 정상 대조군. service_category=monitor (인스턴스 이름 mq 는 destroy 회피로 유지) |
-| agent-ubuntu24-app-01 | ubuntu24 | c2_m2_r40 | apache2 | agent_restart_demo | service_category=web (apache 도 engine 측 web 분류). 3분 주기 agent 재시작 → engine attention.agent_unstable 시연 |
+| agent-ubuntu24-app-01 | ubuntu24 | c2_m2_r40 | nginx | agent_restart_demo | service_category=web (인스턴스 이름의 app 은 잔재 — destroy 회피로 유지). 3분 주기 agent 재시작 → engine attention.agent_unstable 시연 |
 | agent-ubuntu24-web-01 | ubuntu24 | c1_m1_r30 | nginx | offline_once | boot+5분 후 agent stop → engine gap_warnings 시연 |
 
-7 OS / 7 service category / 8 noise profile.
+7 OS / 6 service category / 8 noise profile. `service_app` (apache) role 은 폐기 — ubuntu24-app-01 이 web 카테고리로 흡수.
+
+이전 plan 으로 ubuntu24-app-01 에 apache2 가 깔린 잔재가 있으면 ansible re-converge 전에 manual cleanup:
+
+```bash
+ansible -i inventory/staging/hosts.json agent-ubuntu24-app-01 -m shell --become -a \
+  'systemctl disable --now apache2 || true; DEBIAN_FRONTEND=noninteractive apt-get purge -y apache2 apache2-bin apache2-data apache2-utils || true'
+```
 
 ## 10. 정리
 

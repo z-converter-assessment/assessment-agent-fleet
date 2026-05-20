@@ -29,10 +29,10 @@ agent fleet 의 OS 호환성 + 서비스 운영 다양성 + engine 대시보드 
 | agent-debian13-mq-01 | debian13 | c2_m2_r40 | mq (mosquitto) | mixed |
 | agent-rocky9-cache-01 | rocky9 | c1_m1_r30 | cache (memcached) | mem_heavy |
 | agent-ubuntu20-mq-01 | ubuntu20 | c2_m2_r40 | monitor (node-exporter) | idle |
-| agent-ubuntu24-app-01 | ubuntu24 | c2_m2_r40 | app (apache) | agent_restart_demo |
+| agent-ubuntu24-app-01 | ubuntu24 | c2_m2_r40 | web (nginx) | agent_restart_demo |
 | agent-ubuntu24-web-01 | ubuntu24 | c1_m1_r30 | web (nginx) | offline_once |
 
-7 OS, 7 service category, 8 noise profile.
+7 OS, 6 service category, 8 noise profile.
 
 ### 제외
 - RHEL 8 family (alma8, rocky8) — 호환성 이슈
@@ -41,14 +41,25 @@ agent fleet 의 OS 호환성 + 서비스 운영 다양성 + engine 대시보드 
 - CentOS 6 / SLES 11 — glibc 2.17 미달 (ADR 0006 도 이미 제외)
 
 ### 인스턴스 명명
-`agent-<os>-<service>-NN` 패턴. 단 service 재배치 시 인스턴스 destroy 회피 위해 이름 유지 가능 (예: `agent-ubuntu20-mq-01` 가 service_category=`monitor` 인 경우 운영 트레이드오프).
+`agent-<os>-<service>-NN` 패턴. 단 service 재배치 시 인스턴스 destroy 회피 위해 이름 유지 가능:
+- `agent-ubuntu20-mq-01` — service_category=`monitor` (이름의 mq 는 잔재)
+- `agent-ubuntu24-app-01` — service_category=`web` (이름의 app 은 잔재. app 카테고리 폐기 후 web 으로 흡수)
 
 ### 서비스 install path
-ansible/roles/service_<category> (7 role). OS family 별 vars/{Debian,RedHat}.yml 분기. RHEL 1GB RAM 호스트 OOM 회피 위해 cache 카테고리는 Debian=redis / RHEL=memcached 분기.
+ansible/roles/service_<category> (6 role). OS family 별 vars/{Debian,RedHat}.yml 분기.
+- web=nginx (Debian/RedHat 동일)
+- db=postgresql, container=docker, mq=mosquitto, monitor=prometheus-node-exporter
+- cache 는 RHEL 1GB RAM 호스트 OOM 회피 위해 Debian=redis / RHEL=memcached 분기
+
+`service_app` (apache) role 은 폐기 — ubuntu24-app-01 이 web 카테고리로 흡수되어 어떤 host 도 service_app 그룹에 안 들어감.
 
 ### 부하 시연
 ansible/roles/noise (stress-ng) + noise_agent_restart (systemd timer) + noise_offline_once (systemd-run transient).
 agent_restart_demo / offline_once 는 engine 의 attention 카탈로그 (`agent_unstable`, `gap_warnings`) 시연 트리거.
+
+stress-ng 인자는 호스트 안정성 (1 vCPU / 1GB RAM 의 c1_m1 flavor 가 매트릭스에 섞여 있음) 고려해서 완화:
+- `cpu_heavy`: `--cpu 2 --cpu-load 40` (원래 80 -> 40. 1GB RAM 호스트 동시 부하 시 OOM/스케줄러 굶주림 회피)
+- `mixed`: `--cpu-load 25 --vm-bytes 50M` (원래 40/100M -> 25/50M. mq host 가 mosquitto + agent 와 동시 동작)
 
 ### Broker 좌표 (실값)
 - host: mq-vm 10.0.10.73 (사이트 운영 측 broker)
