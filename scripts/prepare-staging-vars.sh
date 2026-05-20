@@ -40,7 +40,7 @@ else
 fi
 
 echo
-echo "=== 3) vault.yml (dummy, PoC) ==="
+echo "=== 3) vault.yml (engine .env.example 기본 credentials) ==="
 if [ -f "$ENV_DIR/vault.yml" ]; then
   echo "이미 존재: $ENV_DIR/vault.yml (건너뜀)"
 else
@@ -48,9 +48,10 @@ else
     echo "ERROR: ansible/.vault_pass.txt 없음. scripts/setup-ansible.sh 먼저 실행." >&2
     exit 1
   fi
+  # 시연 환경: mq-vm 의 RabbitMQ 가 engine .env.example 기본 credentials 사용 (assessment / assessment, vhost /assessment)
   cat > /tmp/vault.plain.yml <<'EOF'
-vault_rabbitmq_user: "dummy"
-vault_rabbitmq_pass: "dummy"
+vault_rabbitmq_user: "assessment"
+vault_rabbitmq_pass: "assessment"
 EOF
   ansible-vault encrypt --output "$ENV_DIR/vault.yml" /tmp/vault.plain.yml
   rm -f /tmp/vault.plain.yml
