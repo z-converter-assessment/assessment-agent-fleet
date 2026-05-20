@@ -12,11 +12,11 @@
         cmd: fallocate -l 1G /swapfile
         creates: /swapfile
       when: not swap_stat.stat.exists
-    - name: chmod swap
+    - name: Chmod swap file (0600)
       ansible.builtin.file:
         path: /swapfile
         mode: "0600"
-    - name: mkswap
+    - name: Mkswap on /swapfile
       ansible.builtin.command:
         cmd: mkswap /swapfile
       when: not swap_stat.stat.exists
@@ -26,7 +26,7 @@
         cmd: cat /proc/swaps
       register: swap_active
       changed_when: false
-    - name: swapon
+    - name: Swapon /swapfile
       ansible.builtin.command:
         cmd: swapon /swapfile
       when: '"/swapfile" not in swap_active.stdout'
