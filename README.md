@@ -161,8 +161,10 @@ terraform/                      VM provisioning
 ansible/
   ansible.cfg                   roles_path + vault_password_file
   requirements.yml              galaxy collection
-  playbooks/{site,deploy,health-check}.yml
+  playbooks/{site,deploy,services,noise,health-check}.yml
   roles/{common,agent_binary,agent_env,agent_service}/
+  roles/service_{web,db,cache,mq,container,monitor,app}/  service install (OS family 분기)
+  roles/noise{,_agent_restart,_offline_once}/              부하 패턴 (stress-ng / systemd timer / transient unit)
   inventory/{staging,prod}/
 scripts/                        helper 스크립트 (위 표)
 ```
@@ -175,6 +177,7 @@ scripts/                        helper 스크립트 (위 표)
 - [ADR 0005](docs/adr/0005-terraform-state-backend.md) — terraform state = local + cinder volume
 - [ADR 0006](docs/adr/0006-agent-release.md) — agent release (github_release / local_file 토글)
 - [ADR 0007](docs/adr/0007-ansible-vault.md) — ansible vault password = repo 상대 파일
+- [ADR 0008](docs/adr/0008-multi-os-demo.md) — multi-OS / multi-service / noise 시연 매트릭스 (8대)
 
 ## 잔여 결정
 `docs/decisions-pending.md`.

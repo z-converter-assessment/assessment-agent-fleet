@@ -16,3 +16,4 @@
 - [0005-terraform-state-backend.md](0005-terraform-state-backend.md) — Terraform state backend: local + cinder volume
 - [0006-agent-release.md](0006-agent-release.md) — agent release contract
 - [0007-ansible-vault.md](0007-ansible-vault.md) — Ansible vault password 핸들링
+- [0008-multi-os-demo.md](0008-multi-os-demo.md) — multi-OS / multi-service / noise 시연 매트릭스 (8대)
