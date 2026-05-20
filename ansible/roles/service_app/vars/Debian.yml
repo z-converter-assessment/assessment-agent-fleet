@@ -1,2 +1,2 @@
-service_pkg: apache2
-service_unit: apache2
+service_app_pkg: apache2
+service_app_unit: apache2

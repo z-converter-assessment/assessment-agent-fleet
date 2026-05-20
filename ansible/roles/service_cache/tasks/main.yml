@@ -1,20 +1,20 @@
 - name: Load OS family vars
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
-- name: Enable EPEL (RHEL family — redis 는 epel)
-  when: needs_epel | bool
+- name: Enable EPEL (RHEL family — 일부 패키지 epel 필요)
+  when: service_cache_needs_epel | bool
   ansible.builtin.package:
     name: epel-release
     state: present
   ignore_errors: true   # amazon linux 등 epel-release 미존재 distro 회피
 
-- name: Install redis
+- name: Install cache package
   ansible.builtin.package:
-    name: "{{ service_pkg }}"
+    name: "{{ service_cache_pkg }}"
     state: present
 
-- name: Enable and start redis
+- name: Enable and start cache service
   ansible.builtin.systemd_service:
-    name: "{{ service_unit }}"
+    name: "{{ service_cache_unit }}"
     enabled: true
     state: started

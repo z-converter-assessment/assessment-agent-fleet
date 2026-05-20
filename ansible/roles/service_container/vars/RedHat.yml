@@ -1,4 +1,3 @@
 # RHEL family — base 의 podman 사용 (docker-ce repo 추가 회피).
-# agent 의 service_classifier 는 container manager 종류 무관하게 감지.
-service_pkg: podman
-service_unit: podman      # podman.socket 또는 podman.service — restart 만으로 동작
+service_container_pkg: podman
+service_container_unit: podman      # podman.socket 또는 podman.service — restart 만으로 동작

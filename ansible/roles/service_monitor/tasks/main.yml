@@ -2,7 +2,7 @@
   ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Enable EPEL (RHEL family — node_exporter 는 epel)
-  when: needs_epel | bool
+  when: service_monitor_needs_epel | bool
   ansible.builtin.package:
     name: epel-release
     state: present
@@ -10,12 +10,12 @@
 
 - name: Install node exporter
   ansible.builtin.package:
-    name: "{{ service_pkg }}"
+    name: "{{ service_monitor_pkg }}"
     state: present
 
 - name: Enable and start node exporter
   ansible.builtin.systemd_service:
-    name: "{{ service_unit }}"
+    name: "{{ service_monitor_unit }}"
     enabled: true
     state: started
   failed_when: false

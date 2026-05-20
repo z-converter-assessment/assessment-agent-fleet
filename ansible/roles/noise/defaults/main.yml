@@ -7,4 +7,4 @@ noise_args_map:
   mixed:      "--cpu 1 --cpu-load 40 --vm 1 --vm-bytes 100M --vm-keep --io 1 --timeout 0"
 
 # stress-ng 패키지 명 (OS family 별 동일 — RHEL family 는 epel 필요)
-stress_pkg: stress-ng
+noise_stress_pkg: stress-ng

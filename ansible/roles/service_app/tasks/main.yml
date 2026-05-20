@@ -3,11 +3,11 @@
 
 - name: Install apache
   ansible.builtin.package:
-    name: "{{ service_pkg }}"
+    name: "{{ service_app_pkg }}"
     state: present
 
 - name: Enable and start apache
   ansible.builtin.systemd_service:
-    name: "{{ service_unit }}"
+    name: "{{ service_app_unit }}"
     enabled: true
     state: started

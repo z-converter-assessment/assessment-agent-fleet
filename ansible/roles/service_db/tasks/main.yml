@@ -3,23 +3,23 @@
 
 - name: Install postgres packages
   ansible.builtin.package:
-    name: "{{ service_pkg }}"
+    name: "{{ service_db_pkg }}"
     state: present
 
 - name: RHEL family — initdb (한 번만, PG_VERSION 파일 없을 때)
-  when: needs_initdb | bool
+  when: service_db_needs_initdb | bool
   block:
     - name: Check if data dir initialized
       ansible.builtin.stat:
-        path: "{{ pg_data_dir }}/PG_VERSION"
-      register: pg_data
+        path: "{{ service_db_pg_data_dir }}/PG_VERSION"
+      register: service_db_pg_data
     - name: postgresql-setup --initdb
       ansible.builtin.command: postgresql-setup --initdb
-      when: not pg_data.stat.exists
+      when: not service_db_pg_data.stat.exists
       changed_when: true
 
 - name: Enable and start postgres
   ansible.builtin.systemd_service:
-    name: "{{ service_unit }}"
+    name: "{{ service_db_unit }}"
     enabled: true
     state: started

@@ -7,7 +7,7 @@
 
 - name: Install stress-ng
   ansible.builtin.package:
-    name: "{{ stress_pkg }}"
+    name: "{{ noise_stress_pkg }}"
     state: present
 
 - name: Resolve stress-ng args for this host's profile

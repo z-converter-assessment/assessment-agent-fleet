@@ -1,2 +1,2 @@
-service_pkg: httpd
-service_unit: httpd
+service_app_pkg: httpd
+service_app_unit: httpd
