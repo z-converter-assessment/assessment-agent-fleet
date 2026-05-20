@@ -1,0 +1,8 @@
+# Copy to hosts.yml. hosts.yml 은 .gitignore가 차단.
+# scripts/tf-output-to-inventory.sh 로 자동 생성 권장 (출력은 hosts.json).
+
+all:
+  children:
+    agent_workers:
+      hosts:
+        # 매트릭스는 docs/architecture/topology.md 결정 후 채움.

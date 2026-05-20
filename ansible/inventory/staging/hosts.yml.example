@@ -1,0 +1,25 @@
+# Copy to hosts.yml. hosts.yml / hosts.json 은 .gitignore 차단.
+# scripts/tf-output-to-inventory.sh 로 자동 생성 권장 (출력은 hosts.json, ansible 이 JSON inventory 도 수용).
+# 공통 변수는 group_vars/all.yml.
+#
+# 자동 생성 흐름:
+#   cd terraform
+#   terraform output -json > /tmp/tf-output-staging.json
+#   ../scripts/tf-output-to-inventory.sh /tmp/tf-output-staging.json \
+#     > ../ansible/inventory/staging/hosts.json
+#
+# 수동 작성 예시:
+
+all:
+  children:
+    agent_workers:
+      hosts:
+        agent-debian12-vm-01:
+          ansible_host: 10.0.10.13
+          agent_role: agent-host
+        agent-debian12-vm-02:
+          ansible_host: 10.0.10.8
+          agent_role: agent-host
+        agent-debian12-vm-03:
+          ansible_host: 10.0.10.56
+          agent_role: agent-host

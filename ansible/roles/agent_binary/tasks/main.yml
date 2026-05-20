@@ -1,0 +1,72 @@
+- name: Validate agent_binary_source
+  ansible.builtin.assert:
+    that:
+      - agent_binary_source in ["github_release", "local_file"]
+    fail_msg: "agent_binary_source 는 github_release 또는 local_file 이어야 한다."
+
+- name: Validate github_release vars
+  ansible.builtin.assert:
+    that:
+      - agent_version | length > 0
+      - agent_release_repo | length > 0
+    fail_msg: "github_release path 는 agent_version 과 agent_release_repo 가 필요하다."
+  when: agent_binary_source == "github_release"
+
+- name: Validate local_file vars
+  ansible.builtin.assert:
+    that:
+      - agent_binary_local_path | length > 0
+    fail_msg: "local_file path 는 agent_binary_local_path 가 필요하다."
+  when: agent_binary_source == "local_file"
+
+- name: Download agent binary from GitHub Release
+  ansible.builtin.get_url:
+    url: "https://github.com/{{ agent_release_repo }}/releases/download/{{ agent_version }}/assessment-agent-linux-{{ agent_arch }}"
+    dest: "{{ agent_install_path }}.new"
+    mode: "0755"
+    owner: root
+    group: root
+  when: agent_binary_source == "github_release"
+  # private repo 인 경우 url 에 token 또는 headers 추가 필요.
+
+- name: Copy agent binary from controller (local file)
+  ansible.builtin.copy:
+    src: "{{ agent_binary_local_path }}"
+    dest: "{{ agent_install_path }}.new"
+    mode: "0755"
+    owner: root
+    group: root
+  when: agent_binary_source == "local_file"
+
+- name: Compute sha256 of copied binary (local_file path)
+  ansible.builtin.stat:
+    path: "{{ agent_install_path }}.new"
+    checksum_algorithm: sha256
+  register: agent_binary_copied
+  when:
+    - agent_binary_source == "local_file"
+    - agent_binary_local_sha256 | length > 0
+
+- name: Verify sha256 matches (local_file path)
+  ansible.builtin.assert:
+    that:
+      - agent_binary_copied.stat.checksum == agent_binary_local_sha256
+    fail_msg: "sha256 mismatch — expected {{ agent_binary_local_sha256 }}, got {{ agent_binary_copied.stat.checksum }}"
+  when:
+    - agent_binary_source == "local_file"
+    - agent_binary_local_sha256 | length > 0
+
+- name: Promote new binary
+  ansible.builtin.copy:
+    remote_src: true
+    src: "{{ agent_install_path }}.new"
+    dest: "{{ agent_install_path }}"
+    mode: "0755"
+    owner: root
+    group: root
+  notify: Restart assessment-agent
+
+- name: Remove staging binary
+  ansible.builtin.file:
+    path: "{{ agent_install_path }}.new"
+    state: absent

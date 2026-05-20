@@ -1,0 +1,30 @@
+name: lint-ansible
+
+# 비활성 상태 (workflow_dispatch only — 자동 trigger 없음). 활성화 시 아래 trigger 추가:
+#   pull_request:
+#     paths:
+#       - '.github/workflows/lint-ansible.yml'
+#       - 'ansible/**'
+#   push:
+#     branches: [main]
+#     paths:
+#       - 'ansible/**'
+on:
+  workflow_dispatch:
+
+jobs:
+  ansible:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: install ansible-lint
+        run: pip install ansible-lint
+      - name: stub vault password (ansible.cfg 의 vault_password_file 충족용 — lint 만 통과)
+        working-directory: ansible
+        run: echo dummy > .vault_pass.txt && chmod 0600 .vault_pass.txt
+      - name: ansible-lint
+        working-directory: ansible
+        run: ansible-lint

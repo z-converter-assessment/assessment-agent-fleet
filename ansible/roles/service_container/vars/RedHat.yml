@@ -1,0 +1,3 @@
+# RHEL family — base 의 podman 사용 (docker-ce repo 추가 회피).
+service_container_pkg: podman
+service_container_unit: podman      # podman.socket 또는 podman.service — restart 만으로 동작

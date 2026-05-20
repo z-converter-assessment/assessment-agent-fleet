@@ -1,0 +1,12 @@
+[Unit]
+Description=fleet noise — agent restart timer
+
+[Timer]
+# boot 후 60초 후 첫 실행 + 그 후 매 3분마다 restart (시간당 ~20회).
+# engine 측 attention.agent_unstable 발화 트리거 시연.
+OnBootSec=60s
+OnUnitActiveSec=3min
+Unit=noise-agent-restart.service
+
+[Install]
+WantedBy=timers.target

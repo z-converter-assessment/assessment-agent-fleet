@@ -1,0 +1,43 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfvars
+!*.tfvars.example
+backend.hcl
+!backend.hcl.example
+
+# Ansible
+*.retry
+.vault_pass*
+vault_password*
+ansible/inventory/*/hosts.yml
+ansible/inventory/*/hosts.json
+# group_vars/all/ 디렉토리 모드 — vars.yml 차단, vault.yml 은 ansible-vault 암호화 후 commit 가능
+ansible/inventory/*/group_vars/all/vars.yml
+ansible/collections/
+
+# OpenStack credential
+clouds.yaml
+*.openrc
+secure.yaml
+
+# OS
+.DS_Store
+*.swp
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

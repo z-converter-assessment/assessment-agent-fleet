@@ -1,0 +1,3 @@
+service_monitor_pkg: prometheus-node-exporter
+service_monitor_unit: prometheus-node-exporter
+service_monitor_needs_epel: false

@@ -1,0 +1,4 @@
+# Copy to backend.hcl. backend.hcl 는 .gitignore 차단.
+# state backend 는 local. path 는 iac 에 attach 한 cinder volume mount 경로.
+
+path = "/var/lib/terraform-state/prod/terraform.tfstate"

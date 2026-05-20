@@ -1,0 +1,58 @@
+[Unit]
+Description=Assessment Agent — collector + worker (task.install)
+After=network-online.target
+Wants=network-online.target
+# Restart rate limit — systemd v230+ 부터 [Unit] 섹션 위치가 정합.
+StartLimitBurst=5
+StartLimitIntervalSec=300
+
+[Service]
+Type=simple
+User={{ agent_user }}
+Group={{ agent_user }}
+
+# Worker writes /var/lib/agent-worker/{results,done} and extracts under /tmp.
+WorkingDirectory=/var/lib/agent-worker
+ReadWritePaths=/var/lib/agent-worker /tmp
+StateDirectory=agent-worker
+StateDirectoryMode=0700
+RuntimeDirectory=assessment-agent
+RuntimeDirectoryMode=0700
+
+EnvironmentFile=-{{ agent_env_path }}
+EnvironmentFile=-{{ agent_env_local_path }}
+
+ExecStart={{ agent_install_path }}
+
+# Drain in-flight install on SIGTERM (worker task.install).
+KillSignal=SIGTERM
+KillMode=mixed
+TimeoutStopSec=15min
+
+Restart=on-failure
+RestartSec=10s
+
+# Hardening — agent repo deploy/systemd/assessment-agent.service 와 동일.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+PrivateDevices=yes
+# install.sh extraction sandbox lives under /tmp — PrivateTmp 비활성.
+PrivateTmp=no
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=assessment-agent
+
+[Install]
+WantedBy=multi-user.target

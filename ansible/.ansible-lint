@@ -1,0 +1,11 @@
+# ansible-lint 설정.
+# profile: basic | min | moderate | safety | shared | production
+# 처음에는 basic 부터 시작. 점진적으로 상향.
+profile: basic
+
+# var-naming[no-role-prefix] skip — role 내 변수의 <role>_ 접두 강제 규칙.
+# 본 repo 는 agent_binary / agent_env / common 등에서 group_vars/all 의 변수 (agent_version, agent_user 등)
+# 를 role 안에서 직접 참조. role 접두 강제 시 inventory 측 변수까지 rename 필요해 정합성 비용 큼.
+# service_*, noise* role 의 vars/ 파일 은 이미 <role>_ 접두 적용 완료.
+skip_list:
+  - var-naming[no-role-prefix]

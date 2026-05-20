@@ -1,0 +1,35 @@
+- name: Enable EPEL (RHEL family — stress-ng 는 epel)
+  when: ansible_os_family == "RedHat"
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  ignore_errors: true   # amazon linux 등 일부 distro epel-release 미존재 시 skip
+
+- name: Install stress-ng
+  ansible.builtin.package:
+    name: "{{ noise_stress_pkg }}"
+    state: present
+
+- name: Resolve stress-ng args for this host's profile
+  ansible.builtin.set_fact:
+    noise_args: "{{ noise_args_map[noise_profile] }}"
+
+- name: Render noise systemd unit
+  ansible.builtin.template:
+    src: noise-stress.service.j2
+    dest: /etc/systemd/system/noise-stress.service
+    mode: "0644"
+    owner: root
+    group: root
+  register: noise_unit
+
+- name: Reload systemd if unit changed
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: noise_unit.changed
+
+- name: Enable and start noise-stress
+  ansible.builtin.systemd_service:
+    name: noise-stress
+    enabled: true
+    state: started

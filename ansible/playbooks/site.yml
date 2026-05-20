@@ -1,0 +1,11 @@
+- name: Deploy assessment-agent fleet
+  ansible.builtin.import_playbook: deploy.yml
+
+- name: Install services (service_category 별)
+  ansible.builtin.import_playbook: services.yml
+
+- name: Apply noise / 부하 패턴 (noise_profile 별)
+  ansible.builtin.import_playbook: noise.yml
+
+- name: Health check
+  ansible.builtin.import_playbook: health-check.yml

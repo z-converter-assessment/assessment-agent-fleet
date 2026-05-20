@@ -1,0 +1,5 @@
+service_db_pkg:
+  - postgresql
+  - postgresql-contrib
+service_db_unit: postgresql
+service_db_needs_initdb: false

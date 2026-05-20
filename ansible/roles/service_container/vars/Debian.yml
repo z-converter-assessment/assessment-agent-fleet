@@ -1,0 +1,2 @@
+service_container_pkg: docker.io
+service_container_unit: docker

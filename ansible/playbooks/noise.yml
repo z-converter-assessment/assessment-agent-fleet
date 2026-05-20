@@ -1,0 +1,22 @@
+# noise / 부하 패턴 적용. host_vars 의 noise_profile 에 따라 role 분기.
+
+- name: Apply noise (stress-ng) — cpu_light / cpu_heavy / mem_heavy / io_heavy / mixed
+  hosts: noise_cpu_light:noise_cpu_heavy:noise_mem_heavy:noise_io_heavy:noise_mixed
+  become: true
+  gather_facts: true
+  roles:
+    - role: noise
+
+- name: Apply noise — agent restart demo
+  hosts: noise_agent_restart_demo
+  become: true
+  gather_facts: true
+  roles:
+    - role: noise_agent_restart
+
+- name: Apply noise — offline once (5 min publish then stop)
+  hosts: noise_offline_once
+  become: true
+  gather_facts: true
+  roles:
+    - role: noise_offline_once

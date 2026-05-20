@@ -1,0 +1,3 @@
+service_cache_pkg: redis-server
+service_cache_unit: redis-server
+service_cache_needs_epel: false

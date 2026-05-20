@@ -1,0 +1,150 @@
+# Copy to terraform.tfvars and fill in values. terraform.tfvars 는 .gitignore 차단.
+# 30대 multi-OS demo 매트릭스. 서비스 카테고리별 OS 다양화.
+# 결정 history: docs/adr/0008-multi-os-demo.md (예정)
+
+openstack_cloud = "openstack"
+environment     = "staging"
+keypair_name    = "agent-fleet"
+
+network_name = "zconverter-private-net"
+subnet_name  = "target-vms"
+
+security_group_names = ["agent-sg"]
+
+agent_workers = {
+  # ── web (nginx) ────────────────────────────────────────────
+  "agent-debian12-web-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "web", ssh_user = "debian"
+  }
+  "agent-debian12-web-02" = {
+    image = "debian12_x64_uefi_3G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "web", ssh_user = "debian"
+  }
+  "agent-ubuntu22-web-01" = {
+    image = "ubuntu22.04_x64_uefi_2.2G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "web", ssh_user = "ubuntu"
+  }
+  "agent-alma9-web-01" = {
+    image = "alma9_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "web", ssh_user = "almalinux"
+  }
+  "agent-ubuntu24-web-01" = {
+    image = "ubuntu24.04_x64_uefi_3.5G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "web", ssh_user = "ubuntu"
+  }
+
+  # ── db (postgres) ──────────────────────────────────────────
+  "agent-alma9-db-01" = {
+    image = "alma9_x64_uefi_10G", flavor = "c2_m4_r30", role = "agent-host",
+    service_category = "db", ssh_user = "almalinux"
+  }
+  "agent-ubuntu22-db-01" = {
+    image = "ubuntu22.04_x64_uefi_2.2G", flavor = "c2_m4_r30", role = "agent-host",
+    service_category = "db", ssh_user = "ubuntu"
+  }
+  "agent-rocky9-db-01" = {
+    image = "rocky9_x64_uefi_10G", flavor = "c2_m4_r30", role = "agent-host",
+    service_category = "db", ssh_user = "rocky"
+  }
+  "agent-debian12-db-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c2_m4_r30", role = "agent-host",
+    service_category = "db", ssh_user = "debian"
+  }
+
+  # ── cache (redis) ──────────────────────────────────────────
+  "agent-rocky9-cache-01" = {
+    image = "rocky9_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "cache", ssh_user = "rocky"
+  }
+  "agent-debian12-cache-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "cache", ssh_user = "debian"
+  }
+  "agent-ubuntu24-cache-01" = {
+    image = "ubuntu24.04_x64_uefi_3.5G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "cache", ssh_user = "ubuntu"
+  }
+  "agent-alma8-cache-01" = {
+    image = "alma8_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "cache", ssh_user = "almalinux"
+  }
+
+  # ── mq (mosquitto) ─────────────────────────────────────────
+  "agent-debian12-mq-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "mq", ssh_user = "debian"
+  }
+  "agent-ubuntu20-mq-01" = {
+    image = "ubuntu20.04_x64_uefi_2.2G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "mq", ssh_user = "ubuntu"
+  }
+  "agent-rocky8-mq-01" = {
+    image = "rocky8_x64_uefi_10G_v1", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "mq", ssh_user = "rocky"
+  }
+  "agent-debian13-mq-01" = {
+    image = "debian13_x64_uefi_3G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "mq", ssh_user = "debian"
+  }
+
+  # ── container (docker) ─────────────────────────────────────
+  "agent-ubuntu24-container-01" = {
+    image = "ubuntu24.04_x64_uefi_3.5G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "container", ssh_user = "ubuntu"
+  }
+  "agent-debian12-container-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "container", ssh_user = "debian"
+  }
+  "agent-alma9-container-01" = {
+    image = "alma9_x64_uefi_10G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "container", ssh_user = "almalinux"
+  }
+  "agent-amazon2023-container-01" = {
+    image = "amazon2023_x64_bios_25G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "container", ssh_user = "ec2-user"
+  }
+
+  # ── monitor (zabbix-agent) ─────────────────────────────────
+  "agent-rocky9-monitor-01" = {
+    image = "rocky9_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "monitor", ssh_user = "rocky"
+  }
+  "agent-alma9-monitor-01" = {
+    image = "alma9_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "monitor", ssh_user = "almalinux"
+  }
+  "agent-ubuntu22-monitor-01" = {
+    image = "ubuntu22.04_x64_uefi_2.2G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "monitor", ssh_user = "ubuntu"
+  }
+  "agent-redhat9-monitor-01" = {
+    image = "redhat9_x64_uefi_10G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "monitor", ssh_user = "cloud-user"
+  }
+
+  # ── app (apache2) ──────────────────────────────────────────
+  "agent-ubuntu24-app-01" = {
+    image = "ubuntu24.04_x64_uefi_3.5G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "app", ssh_user = "ubuntu"
+  }
+  "agent-debian12-app-01" = {
+    image = "debian12_x64_uefi_3G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "app", ssh_user = "debian"
+  }
+  "agent-rocky9-app-01" = {
+    image = "rocky9_x64_uefi_10G", flavor = "c2_m2_r40", role = "agent-host",
+    service_category = "app", ssh_user = "rocky"
+  }
+
+  # ── offline (서비스 없음, agent 만) ────────────────────────
+  "agent-debian13-offline-01" = {
+    image = "debian13_x64_uefi_3G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "none", ssh_user = "debian"
+  }
+  "agent-debian11-offline-01" = {
+    image = "debian11_x64_bios_3G", flavor = "c1_m1_r30", role = "agent-host",
+    service_category = "none", ssh_user = "debian"
+  }
+}

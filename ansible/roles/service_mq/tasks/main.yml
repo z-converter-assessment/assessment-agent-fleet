@@ -1,0 +1,20 @@
+- name: Load OS family vars
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Enable EPEL (RHEL family — mosquitto 는 epel)
+  when: service_mq_needs_epel | bool
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  ignore_errors: true
+
+- name: Install mosquitto
+  ansible.builtin.package:
+    name: "{{ service_mq_pkg }}"
+    state: present
+
+- name: Enable and start mosquitto
+  ansible.builtin.systemd_service:
+    name: "{{ service_mq_unit }}"
+    enabled: true
+    state: started

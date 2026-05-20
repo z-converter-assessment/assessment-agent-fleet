@@ -1,0 +1,15 @@
+- name: Verify assessment-agent is active
+  hosts: agent_workers
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Check systemd unit state
+      ansible.builtin.systemd_service:
+        name: assessment-agent
+      register: unit_state
+
+    - name: Fail if unit is not active
+      ansible.builtin.fail:
+        msg: "assessment-agent is {{ unit_state.status.ActiveState }} on {{ inventory_hostname }}"
+      when: unit_state.status.ActiveState != "active"

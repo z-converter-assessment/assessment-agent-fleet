@@ -1,0 +1,41 @@
+- name: Install service_web (nginx)
+  hosts: service_web
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_web
+
+- name: Install service_db (postgres)
+  hosts: service_db
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_db
+
+- name: Install service_cache (redis)
+  hosts: service_cache
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_cache
+
+- name: Install service_mq (mosquitto)
+  hosts: service_mq
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_mq
+
+- name: Install service_container (docker / podman)
+  hosts: service_container
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_container
+
+- name: Install service_monitor (prometheus node-exporter)
+  hosts: service_monitor
+  become: true
+  gather_facts: true
+  roles:
+    - role: service_monitor
