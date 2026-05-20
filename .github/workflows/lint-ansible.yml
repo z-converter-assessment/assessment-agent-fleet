@@ -1,25 +1,18 @@
-name: lint
+name: lint-ansible
 
+# 비활성 상태 (workflow_dispatch only — 자동 trigger 없음). 활성화 시 아래 trigger 추가:
+#   pull_request:
+#     paths:
+#       - '.github/workflows/lint-ansible.yml'
+#       - 'ansible/**'
+#   push:
+#     branches: [main]
+#     paths:
+#       - 'ansible/**'
 on:
-  pull_request:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  terraform:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.6.6"
-      - name: terraform fmt
-        run: terraform -chdir=terraform fmt -check -recursive
-      - name: terraform validate
-        run: |
-          terraform -chdir=terraform init -backend=false
-          terraform -chdir=terraform validate
-
   ansible:
     runs-on: ubuntu-latest
     steps:
