@@ -34,12 +34,26 @@ variable "security_group_names" {
 }
 
 variable "agent_workers" {
-  description = "fleet 멤버 매트릭스. docs/architecture/topology.md 의 단일 진실."
+  description = <<-EOT
+    fleet 멤버 매트릭스. docs/architecture/topology.md 의 단일 진실.
+
+    각 host 필드:
+      - image            OpenStack image 명 (예: debian12_x64_uefi_3G)
+      - flavor           OpenStack flavor 명 (예: c1_m1_r30)
+      - role             agent 메타데이터에 박힐 역할 라벨 (예: agent-host)
+      - service_category ansible 의 서비스 role 분기 (web / db / cache / mq / container / monitor / app / none)
+      - ssh_user         cloud-init 기본 사용자명 (debian / ubuntu / cloud-user / almalinux / rocky 등)
+      - noise_profile    ansible 의 noise role 분기 (cpu_light / cpu_heavy / mem_heavy / io_heavy / mixed / idle / agent_restart_demo / offline_once)
+      - metadata         OpenStack instance metadata override (선택)
+  EOT
   type = map(object({
-    image    = string
-    flavor   = string
-    role     = string
-    metadata = optional(map(string), {})
+    image            = string
+    flavor           = string
+    role             = string
+    service_category = optional(string, "none")
+    ssh_user         = string
+    noise_profile    = optional(string, "idle")
+    metadata         = optional(map(string), {})
   }))
 
   validation {
@@ -49,8 +63,22 @@ variable "agent_workers" {
 
   validation {
     condition = alltrue([
-      for w in var.agent_workers : length(w.image) > 0 && length(w.flavor) > 0 && length(w.role) > 0
+      for w in var.agent_workers : length(w.image) > 0 && length(w.flavor) > 0 && length(w.role) > 0 && length(w.ssh_user) > 0
     ])
-    error_message = "각 fleet 멤버 의 image, flavor, role 이 모두 정의되어야 한다."
+    error_message = "각 fleet 멤버 의 image, flavor, role, ssh_user 가 모두 정의되어야 한다."
+  }
+
+  validation {
+    condition = alltrue([
+      for w in var.agent_workers : contains(["web", "db", "cache", "mq", "container", "monitor", "app", "none"], w.service_category)
+    ])
+    error_message = "service_category 는 web / db / cache / mq / container / monitor / app / none 중 하나."
+  }
+
+  validation {
+    condition = alltrue([
+      for w in var.agent_workers : contains(["cpu_light", "cpu_heavy", "mem_heavy", "io_heavy", "mixed", "idle", "agent_restart_demo", "offline_once"], w.noise_profile)
+    ])
+    error_message = "noise_profile 은 cpu_light / cpu_heavy / mem_heavy / io_heavy / mixed / idle / agent_restart_demo / offline_once 중 하나."
   }
 }
