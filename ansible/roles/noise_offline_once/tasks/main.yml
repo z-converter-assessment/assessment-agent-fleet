@@ -1,0 +1,15 @@
+# offline_once: boot 후 5분간 agent 가 inventory/metrics 발행 → 그 후 agent stop.
+# engine 측 attention.gap_warnings + insufficient_data 분류 시연.
+#
+# 구현: systemd transient unit (systemd-run) 으로 5분 후 systemctl stop assessment-agent.
+
+- name: Schedule one-shot agent stop in 5 minutes (idempotent)
+  ansible.builtin.command:
+    cmd: >-
+      systemd-run --on-active=5min --unit=noise-offline-once
+      /usr/bin/systemctl stop assessment-agent
+  register: scheduled
+  changed_when: "'Running timer' in scheduled.stderr or scheduled.rc == 0"
+  failed_when:
+    - scheduled.rc != 0
+    - "'already exists' not in scheduled.stderr"

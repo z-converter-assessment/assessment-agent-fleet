@@ -1,0 +1,3 @@
+service_pkg: memcached
+service_unit: memcached
+needs_epel: false      # memcached 는 RHEL/Rocky/Alma base 에 있음. 1GB RAM host 에서 install 안전

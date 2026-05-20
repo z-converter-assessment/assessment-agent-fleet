@@ -1,0 +1,20 @@
+- name: Load OS family vars
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Enable EPEL (RHEL family — redis 는 epel)
+  when: needs_epel | bool
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+  ignore_errors: true   # amazon linux 등 epel-release 미존재 distro 회피
+
+- name: Install redis
+  ansible.builtin.package:
+    name: "{{ service_pkg }}"
+    state: present
+
+- name: Enable and start redis
+  ansible.builtin.systemd_service:
+    name: "{{ service_unit }}"
+    enabled: true
+    state: started

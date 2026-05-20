@@ -1,0 +1,14 @@
+- name: Load OS family vars
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Install container runtime
+  ansible.builtin.package:
+    name: "{{ service_pkg }}"
+    state: present
+
+- name: Enable and start container runtime service
+  ansible.builtin.systemd_service:
+    name: "{{ service_unit }}"
+    enabled: true
+    state: started
+  failed_when: false   # podman 은 socket-based 운영, service unit 없을 수 있음

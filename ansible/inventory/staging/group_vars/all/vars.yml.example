@@ -2,9 +2,10 @@
 # vars.yml 은 .gitignore 차단. 본 예시는 staging 표준값.
 
 # --- SSH 연결 ---
-ansible_user: debian                          # debian12_x64_uefi_3G 의 기본 cloud-init 사용자
+# ansible_user 는 host_vars 에서 OS 별로 다르게 설정 (terraform output 으로 자동 inject).
+# debian → debian, ubuntu → ubuntu, alma → almalinux, rocky → rocky, redhat → cloud-user, amazon → ec2-user.
 ansible_ssh_private_key_file: ~/.ssh/agent-fleet
-ansible_python_interpreter: /usr/bin/python3
+ansible_python_interpreter: auto              # OS 별로 다양 — auto-detect (ansible-core 2.12+ 기본)
 ansible_become: true                          # 대부분 task 가 root 필요
 
 # --- agent binary fetch ---
@@ -32,9 +33,9 @@ agent_env_local_path: "/etc/assessment-agent/agent.env.local"
 
 # --- agent runtime env (non-secret) ---
 # 키 카탈로그 단일 진실: docs/architecture/env-contract.md
-rabbitmq_host: "10.0.10.110"                  # mq-vm. 실값은 환경별 갱신
+rabbitmq_host: "10.0.10.110"                  # mq-vm (assessment-engine 서브넷). 같은 network 라 라우터 hop 통해 도달
 rabbitmq_port: 5672
-rabbitmq_vhost: "/"
+rabbitmq_vhost: "/assessment"                 # engine .env.example 기본값 — prod /assessment vhost
 rabbitmq_heartbeat_sec: 60
 rabbitmq_confirm_timeout_sec: 5
 

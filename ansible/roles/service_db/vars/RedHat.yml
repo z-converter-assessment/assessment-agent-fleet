@@ -1,0 +1,6 @@
+service_pkg:
+  - postgresql-server
+  - postgresql-contrib
+service_unit: postgresql
+needs_initdb: true
+pg_data_dir: /var/lib/pgsql/data

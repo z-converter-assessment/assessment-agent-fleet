@@ -1,0 +1,10 @@
+[Unit]
+Description=fleet noise — restart assessment-agent (demo)
+Wants=noise-agent-restart.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart assessment-agent
+
+[Install]
+WantedBy=multi-user.target

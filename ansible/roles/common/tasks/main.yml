@@ -1,3 +1,42 @@
+- name: Ensure swap (RAM < 1GB host — dnf OOM 회피)
+  when:
+    - ansible_memtotal_mb is defined
+    - ansible_memtotal_mb < 1024
+  block:
+    - name: Check swap file
+      ansible.builtin.stat:
+        path: /swapfile
+      register: swap_stat
+    - name: Create swap file
+      ansible.builtin.command:
+        cmd: fallocate -l 1G /swapfile
+        creates: /swapfile
+      when: not swap_stat.stat.exists
+    - name: chmod swap
+      ansible.builtin.file:
+        path: /swapfile
+        mode: "0600"
+    - name: mkswap
+      ansible.builtin.command:
+        cmd: mkswap /swapfile
+      when: not swap_stat.stat.exists
+      changed_when: true
+    - name: Read active swap
+      ansible.builtin.command:
+        cmd: cat /proc/swaps
+      register: swap_active
+      changed_when: false
+    - name: swapon
+      ansible.builtin.command:
+        cmd: swapon /swapfile
+      when: '"/swapfile" not in swap_active.stdout'
+
+- name: Refresh apt cache (Debian family)
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 600
+  when: ansible_os_family == "Debian"
+
 - name: Ensure required OS packages are present
   ansible.builtin.package:
     name:
