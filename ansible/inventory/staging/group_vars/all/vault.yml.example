@@ -7,9 +7,14 @@
 # 평문 commit 금지: vault.yml 은 ansible-vault 로 암호화된 상태로만 commit.
 # 키 카탈로그 단일 진실: docs/architecture/env-contract.md
 
-# --- Broker credentials (필수 / secret) ---
+# --- Broker credentials (collector publish, 필수 / secret) ---
 vault_rabbitmq_user: "REPLACE_ME"
 vault_rabbitmq_pass: "REPLACE_ME"
+
+# --- Worker credentials (task.install consumer + task.result publish) ---
+# RABBITMQ_WORKER_USER 가 빈 값이면 agent worker 비활성. 발급 받은 별도 user 사용 (broker 권한: read+write 분리).
+vault_rabbitmq_worker_user: ""    # 예: "assessment-worker"
+vault_rabbitmq_worker_pass: ""
 
 # --- mTLS client key (선택, prod) ---
 # vault_rabbitmq_tls_key: ""                  # 파일 내용 또는 path 참조 정책에 따라

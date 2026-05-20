@@ -3,13 +3,18 @@
 #
 # 구현: systemd transient unit (systemd-run) 으로 5분 후 systemctl stop assessment-agent.
 
-- name: Schedule one-shot agent stop in 5 minutes (idempotent)
+- name: Check if noise-offline-once.timer already loaded
+  ansible.builtin.command:
+    cmd: systemctl is-active noise-offline-once.timer
+  register: nfo_active
+  changed_when: false
+  failed_when: false
+
+- name: Schedule one-shot agent stop in 5 minutes (when timer 아직 없음)
   ansible.builtin.command:
     cmd: >-
       systemd-run --on-active=5min --unit=noise-offline-once
       /usr/bin/systemctl stop assessment-agent
+  when: nfo_active.stdout != "active"
   register: scheduled
-  changed_when: "'Running timer' in scheduled.stderr or scheduled.rc == 0"
-  failed_when:
-    - scheduled.rc != 0
-    - "'already exists' not in scheduled.stderr"
+  changed_when: true

@@ -51,3 +51,8 @@ rabbitmq_routing_key_error: "server.error"
 
 agent_interval_sec: 60
 # agent_external_ip: ""                       # 미설정 시 IMDS 자동 조회
+
+# --- agent worker (task.install 처리) ---
+# RABBITMQ_WORKER_USER 가 vault.yml 에서 채워지면 worker 활성화 (agent main.c gate).
+# WORKER_TASK_EXCHANGE / WORKER_TASK_QUEUE_PREFIX / WORKER_TASK_RESULT_KEY 는 agent default 사용 (assessment.tasks / agent.tasks / task.result).
+agent_worker_allowed_hosts: "10.0.10.78,192.168.3.94"   # WORKER_DOWNLOAD_ALLOWED_HOSTS csv. task.install download.url host 화이트리스트

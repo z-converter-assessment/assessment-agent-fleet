@@ -1,3 +1,67 @@
+- name: Enable persistent journal (/var/log/journal — debian/ubuntu cloud image default 미보유)
+  ansible.builtin.file:
+    path: /var/log/journal
+    state: directory
+    mode: "2755"
+    owner: root
+    group: systemd-journal
+  register: journal_dir
+
+- name: Restart systemd-journald (journal persistent 활성화)
+  ansible.builtin.systemd_service:
+    name: systemd-journald
+    state: restarted
+  when: journal_dir.changed
+
+- name: Reset machine-id (image clone 의 cloud-init machine-id 미reset 보정)
+  # 본 사이트 cloud-image 가 sealing 전 /etc/machine-id 비우지 않아서 같은 image 에서 부팅된
+  # 인스턴스가 동일 machine-id 를 가짐. engine 의 (machine_id, hostname) composite unique 로
+  # row 분리는 되지만 시연 가시화 측면에서 unique 가 깔끔. /var/lib/agent-worker/.machine-id-reset
+  # 플래그로 1회 reset 후 skip (재실행 idempotent).
+  vars:
+    reset_flag: /var/lib/agent-worker/.machine-id-reset
+  block:
+    - name: Check machine-id reset flag
+      ansible.builtin.stat:
+        path: "{{ reset_flag }}"
+      register: mid_flag
+    - name: Reset /etc/machine-id + /var/lib/dbus/machine-id
+      when: not mid_flag.stat.exists
+      block:
+        - name: Truncate /etc/machine-id
+          ansible.builtin.command:
+            cmd: truncate -s 0 /etc/machine-id
+          changed_when: true
+        - name: Remove /var/lib/dbus/machine-id
+          ansible.builtin.file:
+            path: /var/lib/dbus/machine-id
+            state: absent
+        - name: systemd-machine-id-setup
+          ansible.builtin.command:
+            cmd: systemd-machine-id-setup
+          changed_when: true
+        - name: Ensure /var/lib/dbus dir (legacy dbus compat — RHEL 9 family default 미존재)
+          ansible.builtin.file:
+            path: /var/lib/dbus
+            state: directory
+            mode: "0755"
+        - name: Symlink /var/lib/dbus/machine-id -> /etc/machine-id
+          ansible.builtin.file:
+            src: /etc/machine-id
+            dest: /var/lib/dbus/machine-id
+            state: link
+            force: true
+        - name: Ensure flag dir
+          ansible.builtin.file:
+            path: "{{ reset_flag | dirname }}"
+            state: directory
+            mode: "0755"
+        - name: Mark reset done (flag)
+          ansible.builtin.copy:
+            content: "machine-id reset by ansible common role"
+            dest: "{{ reset_flag }}"
+            mode: "0644"
+
 - name: Ensure swap (RAM < 1GB host — dnf OOM 회피)
   when:
     - ansible_memtotal_mb is defined
