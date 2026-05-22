@@ -10,9 +10,14 @@
     name: "{{ noise_stress_pkg }}"
     state: present
 
-- name: Resolve stress-ng args for this host's profile
-  ansible.builtin.set_fact:
-    noise_args: "{{ noise_args_map[noise_profile] }}"
+- name: Deploy noise stress wrapper
+  ansible.builtin.copy:
+    src: noise-stress-wrapper.sh
+    dest: /usr/local/bin/noise-stress-wrapper.sh
+    mode: "0755"
+    owner: root
+    group: root
+  register: noise_wrapper
 
 - name: Render noise systemd unit
   ansible.builtin.template:
@@ -23,13 +28,19 @@
     group: root
   register: noise_unit
 
-- name: Reload systemd if unit changed
+- name: Reload systemd if unit or wrapper changed
   ansible.builtin.systemd_service:
     daemon_reload: true
-  when: noise_unit.changed
+  when: noise_unit.changed or noise_wrapper.changed
 
 - name: Enable and start noise-stress
   ansible.builtin.systemd_service:
     name: noise-stress
     enabled: true
     state: started
+
+- name: Restart noise-stress if wrapper changed
+  ansible.builtin.systemd_service:
+    name: noise-stress
+    state: restarted
+  when: noise_wrapper.changed

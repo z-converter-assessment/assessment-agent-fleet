@@ -5,11 +5,13 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/stress-ng {{ noise_args }}
+ExecStart=/usr/local/bin/noise-stress-wrapper.sh {{ noise_profile }}
 Restart=on-failure
 RestartSec=30s
 Nice=10
 IOSchedulingClass=idle
+KillMode=mixed
+TimeoutStopSec=15
 # memory 보호 — noise 가 host 전체 메모리 점유하지 않게 cgroup 으로 제약
 MemoryHigh={{ ansible_memtotal_mb // 2 }}M
 

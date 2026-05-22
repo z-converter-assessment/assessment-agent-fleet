@@ -1,10 +1,2 @@
-# profile 별 stress-ng 인자 매핑. noise_profile 변수 (host_vars) 에 의존.
-noise_args_map:
-  cpu_light: "--cpu 1 --cpu-load 30 --timeout 0"
-  cpu_heavy: "--cpu 2 --cpu-load 40 --timeout 0"
-  mem_heavy: "--vm 1 --vm-bytes 40% --vm-keep --timeout 0"
-  io_heavy: "--hdd 1 --hdd-bytes 100M --timeout 0"
-  mixed: "--cpu 1 --cpu-load 25 --vm 1 --vm-bytes 50M --vm-keep --io 1 --timeout 0"
-
 # stress-ng 패키지 명 (OS family 별 동일 — RHEL family 는 epel 필요)
 noise_stress_pkg: stress-ng
