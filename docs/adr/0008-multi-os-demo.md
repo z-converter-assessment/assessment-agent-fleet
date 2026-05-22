@@ -23,14 +23,14 @@ agent fleet 의 OS 호환성 + 서비스 운영 다양성 + engine 대시보드 
 
 | host | OS | flavor | service | noise |
 |------|----|--------|---------|-------|
-| agent-alma9-db-01 | alma9 | c2_m4_r30 | db (postgres) | io_heavy |
-| agent-debian12-container-01 | debian12 | c2_m2_r40 | container (docker) | cpu_heavy |
-| agent-debian12-web-01 | debian12 | c1_m1_r30 | web (nginx) | cpu_light |
-| agent-debian13-mq-01 | debian13 | c2_m2_r40 | mq (mosquitto) | mixed |
-| agent-rocky9-cache-01 | rocky9 | c1_m1_r30 | cache (memcached) | mem_heavy |
-| agent-ubuntu20-mq-01 | ubuntu20 | c2_m2_r40 | monitor (node-exporter) | idle |
-| agent-ubuntu24-app-01 | ubuntu24 | c2_m2_r40 | web (nginx) | agent_restart_demo |
-| agent-ubuntu24-web-01 | ubuntu24 | c1_m1_r30 | web (nginx) | offline_once |
+| agent-alma9-db-01 | alma9 | c1 | db (postgres) | io_heavy |
+| agent-debian12-container-01 | debian12 | c1 | container (docker) | cpu_heavy |
+| agent-debian12-web-01 | debian12 | c1 | web (nginx) | cpu_light |
+| agent-debian13-mq-01 | debian13 | c1 | mq (mosquitto) | mixed |
+| agent-rocky9-cache-01 | rocky9 | c1 | cache (memcached) | mem_heavy |
+| agent-ubuntu20-mq-01 | ubuntu20 | c1 | monitor (node-exporter) | idle |
+| agent-ubuntu24-app-01 | ubuntu24 | c1 | web (nginx) | agent_restart_demo |
+| agent-ubuntu24-web-01 | ubuntu24 | c1 | web (nginx) | offline_once |
 
 7 OS, 6 service category, 8 noise profile.
 
@@ -57,7 +57,7 @@ ansible/roles/service_<category> (6 role). OS family 별 vars/{Debian,RedHat}.ym
 ansible/roles/noise (stress-ng) + noise_agent_restart (systemd timer) + noise_offline_once (systemd-run transient).
 agent_restart_demo / offline_once 는 engine 의 attention 카탈로그 (`agent_unstable`, `gap_warnings`) 시연 트리거.
 
-stress-ng 인자는 호스트 안정성 (1 vCPU / 1GB RAM 의 c1_m1 flavor 가 매트릭스에 섞여 있음) 고려해서 완화:
+stress-ng 인자는 호스트 안정성 (자원 최소 c1 flavor 일괄 적용) 고려해서 완화:
 - `cpu_heavy`: `--cpu 2 --cpu-load 40` (원래 80 -> 40. 1GB RAM 호스트 동시 부하 시 OOM/스케줄러 굶주림 회피)
 - `mixed`: `--cpu-load 25 --vm-bytes 50M` (원래 40/100M -> 25/50M. mq host 가 mosquitto + agent 와 동시 동작)
 

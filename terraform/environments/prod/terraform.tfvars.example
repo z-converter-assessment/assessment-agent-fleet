@@ -13,7 +13,7 @@ security_group_names = ["sg-agent"]
 agent_workers = {
   "agent-debian12-vm-01" = {
     image  = "debian12_x64_uefi_3G"
-    flavor = "c1_m1_r30"
+    flavor = "c1"
     role   = "agent-host"
   }
 }
