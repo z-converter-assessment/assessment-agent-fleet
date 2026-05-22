@@ -5,7 +5,7 @@
 
 ## 전제
 - 점프호스트 (Windows Server 2022) RDP 접속 완료
-- 인프라 VM ssh 접속 완료 (`docs/operations/infra-vm-create.md` 진행)
+- 인프라 VM ssh 접속 완료 (사이트 운영자 사전 셋업)
 - sudo 권한 보유
 
 ## Debian 13 (trixie) 주의

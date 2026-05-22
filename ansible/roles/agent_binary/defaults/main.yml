@@ -11,7 +11,6 @@ agent_arch: "x86_64"       # agent dist asset 명명: assessment-agent-linux-x86
 # --- local_file path 변수 ---
 # controller (iac) 측 바이너리 절대 경로. 예: ~/agent-binaries/latest/assessment-agent-linux-x86_64
 # 빌드 산출물은 ~/agent-binaries/<version>/ 으로 보관 + latest symlink 가리킴.
-# (자세히: docs/operations/agent-binary-archive.md)
 agent_binary_local_path: ""
 # 무결성 검증용 sha256 hex. ~/agent-binaries/<version>/SHA256SUMS 첫 컬럼 값. 비어있으면 검증 skip
 agent_binary_local_sha256: ""

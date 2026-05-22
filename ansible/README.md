@@ -59,7 +59,4 @@ ansible-playbook -i inventory/staging/hosts.json playbooks/health-check.yml     
 
 vault password 는 `.vault_pass.txt` 가 자동 로드. `--ask-vault-pass` 불필요.
 
-## 결정 필요
-잔여 항목은 [docs/decisions-pending.md](../docs/decisions-pending.md) 참조.
-
 세부 contract 는 [docs/architecture/](../docs/architecture/) 참조.

@@ -110,8 +110,6 @@ agent 가 GitHub Release 가 아닌 로컬 빌드 산출물을 사용하려면 (
 - 본 repo 에서 `bash scripts/archive-agent-build.sh` 로 `~/agent-binaries/dev-<sha8>/` 로 archive + `latest` symlink 갱신
 - `prepare-staging-vars.sh` 가 `~/agent-binaries/latest/SHA256SUMS` 에서 sha256 자동 추출 → `vars.yml` 갱신
 
-archive 구조: `docs/operations/agent-binary-archive.md`.
-
 정식 release path (`agent_binary_source: github_release`) 는 `ansible/inventory/<env>/group_vars/all/vars.yml` 에서 토글.
 
 ### 7) 정리 (teardown)
@@ -149,11 +147,9 @@ docs/
   getting-started.md            진입 순서 (키워드)
   preflight.md                  작업 전 체크리스트
   commit.md                     commit 규칙
-  decisions-pending.md          잔여 TBD
-  architecture/                 설계 단일 진실 (topology / credentials / agent-release / env-contract / inventory)
-  operations/                   운영 절차 (bootstrap / deploy / upgrade / rotate / runbook / infra-vm-create)
+  architecture/                 설계 단일 진실 (topology / credentials / agent-release / env-contract)
+  operations/                   운영 절차 (bootstrap / deploy / upgrade / rotate / runbook)
   adr/                          결정 history
-  ref/                          격리. 어떤 문서/코드도 참조 금지
 terraform/                      VM provisioning
   versions.tf providers.tf variables.tf main.tf outputs.tf
   modules/vm/                   VM 단위 module (port + compute_instance)
@@ -173,11 +169,9 @@ scripts/                        helper 스크립트 (위 표)
 - [ADR 0001](docs/adr/0001-tooling.md) — Terraform + Ansible
 - [ADR 0002](docs/adr/0002-commit-convention.md) — commit message 규칙
 - [ADR 0003](docs/adr/0003-credential-method.md) — OpenStack credential = application credential
-- [ADR 0004](docs/adr/0004-topology.md) — fleet topology (target-vms 서브넷, c1_m1_r30, debian12, sg-agent)
+- [ADR 0004](docs/adr/0004-topology.md) — fleet topology (target-vms 서브넷, c1 flavor, debian12, sg-agent)
 - [ADR 0005](docs/adr/0005-terraform-state-backend.md) — terraform state = local + cinder volume
 - [ADR 0006](docs/adr/0006-agent-release.md) — agent release (github_release / local_file 토글)
 - [ADR 0007](docs/adr/0007-ansible-vault.md) — ansible vault password = repo 상대 파일
 - [ADR 0008](docs/adr/0008-multi-os-demo.md) — multi-OS / multi-service / noise 시연 매트릭스 (8대)
 
-## 잔여 결정
-`docs/decisions-pending.md`.

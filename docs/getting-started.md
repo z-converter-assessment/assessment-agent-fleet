@@ -6,7 +6,7 @@
 
 ## 0. 작업 환경 진입
 - RDP / WindowApp -> Windows Server 2022 점프호스트
-- 점프호스트에서 인프라 VM 생성 + ssh 셋업: [operations/infra-vm-create.md](operations/infra-vm-create.md)
+- 점프호스트에서 인프라 VM 생성 + ssh 셋업 (사이트 운영자 절차)
 - ssh -> 인프라 VM (Ubuntu 또는 Debian)
 - 인프라 VM toolchain 설치: `bash scripts/bootstrap.sh` (세부 [operations/bootstrap.md](operations/bootstrap.md))
 - 사전 체크: [preflight.md](preflight.md)
@@ -33,11 +33,11 @@
 - `bash scripts/prepare-staging-vars.sh` (all.yml + sha256 자동 + vault dummy)
 - `ansible-playbook -i inventory/<env>/hosts.json playbooks/site.yml`
 
-세부 [operations/deploy.md](operations/deploy.md), [architecture/inventory.md](architecture/inventory.md), [architecture/env-contract.md](architecture/env-contract.md).
+세부 [operations/deploy.md](operations/deploy.md), [architecture/env-contract.md](architecture/env-contract.md).
 
 ## 5. 헬스 검증
 - agent systemd active 상태 확인
-- agent -> engine broker 도달 검증 (engine 인프라 별도일 때 — [operations/poc-temp-engine.md](operations/poc-temp-engine.md))
+- agent -> engine broker 도달 검증 (engine 인프라 별도 트랙)
 
 ## 6. 운영 루틴
 - agent 버전 갱신: [operations/upgrade.md](operations/upgrade.md)

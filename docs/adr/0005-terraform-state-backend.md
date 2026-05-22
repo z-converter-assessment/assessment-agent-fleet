@@ -4,7 +4,7 @@
 - Date: 2026-05-19
 
 ## Context
-terraform state 저장 위치 결정 필요. `docs/decisions-pending.md` 의 Terraform 항목.
+terraform state 저장 위치 결정 필요.
 
 본 클라우드 정찰 결과:
 - swift (object-store) 서비스 미가용 — keystone catalog 에 object-store endpoint 없음

@@ -4,7 +4,7 @@
 - Date: 2026-05-19
 
 ## Context
-ansible-vault 로 암호화한 `vault.yml` (RABBITMQ_PASS 등 secret 포함) 의 복호화 password 핸들링 방식 결정 필요. `docs/decisions-pending.md` 의 Ansible 항목.
+ansible-vault 로 암호화한 `vault.yml` (RABBITMQ_PASS 등 secret 포함) 의 복호화 password 핸들링 방식 결정 필요.
 
 가능 후보:
 - 파일 (`~/.ansible-vault-pass` 등)

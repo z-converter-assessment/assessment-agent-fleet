@@ -20,7 +20,6 @@ assessment-agent-fleet — OpenStack 환경에서 agent fleet 멤버 VM N대를 
 - CLAUDE.md는 컨텍스트 상주 시 항상 유의미한 정보만 보유
 - 세부는 docs/ 분기
 - 참조 방향: CLAUDE.md -> docs (단방향)
-- docs/ref/ 는 격리. 어떤 문서나 코드도 참조 금지
 
 ## commit 규칙
 - type prefix: feat / fix / chore / refactor / test 중 정확한 분류

@@ -4,7 +4,7 @@
 - Date: 2026-05-19
 
 ## Context
-fleet 멤버에 install 할 agent C11 바이너리의 fetch / 검증 / 빌드 방법 결정 필요. `docs/decisions-pending.md` 의 Agent Release 항목.
+fleet 멤버에 install 할 agent C11 바이너리의 fetch / 검증 / 빌드 방법 결정 필요.
 
 agent repo (`z-converter-assessment/assessment-agent`) 정찰 결과:
 - 빌드 시스템: GNU Make + 정적 vendor (cJSON / rabbitmq-c / libcurl / libarchive / OpenSSL / zlib)

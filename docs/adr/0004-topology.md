@@ -4,9 +4,9 @@
 - Date: 2026-05-19
 
 ## Context
-본 repo 의 fleet 멤버 VM 매트릭스 결정 필요. `docs/architecture/topology.md` TBD 와 `docs/decisions-pending.md` 의 Topology 항목.
+본 repo 의 fleet 멤버 VM 매트릭스 결정 필요. `docs/architecture/topology.md` 의 결정 입력.
 
-OpenStack 정찰 결과 (`docs/architecture/inventory.md` 의 자동 생성 부분과 별개, 1회성 정찰):
+OpenStack 정찰 결과 (1회성 정찰):
 - 기존 인스턴스 7대 — engine-main, api-vm, worker-vm, db-vm, mq-vm, cache-vm, IaC
 - 네트워크 `zconverter-private-net` 에 서브넷 2개:
   - `assessment-engine` (10.0.10.64/26) — 평가 엔진 컴포넌트
@@ -26,7 +26,7 @@ fleet 멤버 = 평가 대상 시뮬레이션 VM. 각 VM 에 agent C11 바이너�
 - floating IP: 불필요 (outbound-only, 평가 대상 트랙)
 
 ### 형상
-- flavor: `c1_m1_r30` (1vCPU / 1GB / 30GB)
+- flavor: `c1` (자원 최소 flavor)
 - image: `debian12_x64_uefi_3G`
 - 네이밍 컨벤션: `agent-<os>-vm-NN` (예: `agent-debian12-vm-01`)
 - staging 초기 개수: 3대 (multi-instance 동작 검증용)
@@ -40,7 +40,7 @@ fleet 멤버 = 평가 대상 시뮬레이션 VM. 각 VM 에 agent C11 바이너�
 - sg-agent 룰 수정은 in-place edit 불가, 룰 삭제 + 신규 룰 생성 절차. terraform 으로 sg 관리 시 `openstack_networking_secgroup_rule_v2` resource 로 표현
 - naming 에 `<os>` 가 들어가서 향후 OS 다양화 (debian13, alma9 등) 시 fleet 단위 fan-out 가능. terraform `agent_workers` 변수에 OS 정보 포함
 - floating IP 미할당 — iac 외부에서 fleet 멤버로 직접 ssh 불가. 운영자가 iac 거점에서만 접근
-- c1_m1_r30 으로 시작 — agent 실측 결과 부족 시 flavor 갱신 (terraform 변수 갱신 + 재apply, image 동일 유지면 in-place resize 시도 가능)
+- c1 으로 시작 — agent 실측 결과 부족 시 flavor 갱신 (terraform 변수 갱신 + 재apply, image 동일 유지면 in-place resize 시도 가능)
 
 ## Alternatives
 - 서브넷 `assessment-engine` 선택: agent 가 엔진 컴포넌트로 해석. 본 fleet 정체성과 불일치 (시뮬레이션 대상이지 엔진 일부 아님)

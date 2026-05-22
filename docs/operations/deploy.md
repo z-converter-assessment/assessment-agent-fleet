@@ -91,8 +91,6 @@ ssh -i ~/.ssh/agent-fleet debian@<ip> 'sudo systemctl status assessment-agent --
 ssh -i ~/.ssh/agent-fleet debian@<ip> 'sudo journalctl -u assessment-agent -n 30 --no-pager'
 ```
 
-agent → broker 까지 검증하려면 [poc-temp-engine.md](poc-temp-engine.md) 참조 (engine 인프라 별도일 때).
-
 ## prod 환경
 
 staging 검증 통과 후 동일 절차의 `<env>` 를 `prod` 로 치환. terraform / ansible 변경은 환경별로 같은 PR 안에서 일관 적용.
